@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CATE - Our Work Gallery</title>
+    
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables (Merged) --- */
+        :root {
+            /* Standard Theme Colors */
+            --primary: #006F8F; --primary-dark: #005a75; --primary-light: #009ebf;
+            --accent-blue: #3b82f6; --bg-body: #f8fafc; --surface-color: #ffffff; --surface: #ffffff;
+            --text-main: #1e293b; --text-muted: #64748b; --border-color: #e2e8f0; --border: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-glow: 0 8px 25px rgba(0, 111, 143, 0.25);
+            --accent-bg: rgba(0, 111, 143, 0.08);
+            --dark-footer: #001f2b;
+            
+            /* Gallery Specific Colors */
+            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
+            --shadow-card: 0 15px 35px -5px rgba(0, 111, 143, 0.15);
+            --btn-workshop: #f59e0b; 
+            --btn-admin: #1e293b; 
+            --gradient-text: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary: #00d2be; --bg-body: #0f172a; --surface: #1e293b; --surface-color: #1e293b;
+            --text-main: #f8fafc; --text-muted: #94a3b8; --border: #334155; --border-color: #334155;
+            --dark-footer: #0b1116; --shadow-card: 0 15px 35px -5px rgba(0,0,0,0.5);
+            --primary-light: #5eead4; --accent-bg: rgba(0, 210, 190, 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Outfit', 'Inter', 'Cairo', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 0; 
+            transition: background-color 0.4s ease, color 0.4s ease; 
+            overflow-x: hidden; 
+            position: relative; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* --- Gears Animation --- */
+        .gears-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .gear-svg { position: absolute; fill: none; stroke: #009DC2; stroke-width: 15px; opacity: 0.08; }
+        @keyframes rotate-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotate-ccw { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        
+        .g-cluster-1-big { top: -120px; right: -120px; width: 650px; height: 650px; animation: rotate-cw 80s linear infinite; }
+        .g-cluster-1-small { top: 380px; right: 80px; width: 250px; height: 250px; animation: rotate-ccw 30s linear infinite; opacity: 0.1; }
+        .g-cluster-2-big { bottom: -100px; left: -100px; width: 500px; height: 500px; animation: rotate-ccw 60s linear infinite; }
+        .g-cluster-2-small { bottom: 250px; left: 180px; width: 200px; height: 200px; animation: rotate-cw 24s linear infinite; opacity: 0.1; }
+
+        @media (max-width: 768px) {
+            .g-cluster-1-big, .g-cluster-2-big { display: none; }
+            .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
+        }
+
+        /* --- HEADER STYLES --- */
+        header { 
+            background-color: var(--surface-color); 
+            padding: 0 5%; 
+            display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--border-color); 
+            transition: all 0.3s ease; 
+            height: 90px;
+            overflow: visible;
+        }
+
+        header.header-scrolled {
+            background-color: var(--surface-color) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: none;
+            height: 90px;
+        }
+
+        .logo-area { 
+            position: relative;
+            display: flex; 
+            align-items: center; 
+            width: 210px; 
+            height: 100%;
+            cursor: pointer; 
+        }
+
+        .cate-logo { 
+            position: absolute;
+            top: -25px; 
+            left: 0;
+            height: 175px; 
+            width: auto;
+            object-fit: contain; 
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); 
+            z-index: 1100;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-area:hover .cate-logo { transform: scale(1.02); }
+        
+        .main-nav { display: flex; gap: 30px; }
+        
+        .nav-link { 
+            text-decoration: none; 
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: 0.3s; 
+            position: relative;
+            letter-spacing: 0.3px;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--primary); transition: width 0.3s; border-radius: 2px; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        
+        .atlas-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer; 
+            transition: transform 0.3s;
+        }
+        .atlas-container:hover { transform: scale(1.05); }
+        
+        .atlas-logo { 
+            height: 45px; 
+            object-fit: contain; 
+        }
+
+        button { border: none; outline: none; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        
+        /* Mobile Menu */
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+        .mobile-menu { position: fixed; top: 0; right: -320px; width: 320px; max-width: 85vw; height: 100vh; background: var(--surface-color); box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 1001; transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); padding: 30px; display: flex; flex-direction: column; gap: 40px; border-top-left-radius: 30px; border-bottom-left-radius: 30px; }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        
+        .mobile-logo { height: 60px; filter: none; opacity: 1; transition: 0.3s; }
+        
+        .close-menu { font-size: 1.5rem; color: var(--text-muted); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); }
+        .close-menu:hover { background: var(--primary); color: white; transform: rotate(90deg); }
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .nav-link-mobile { display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text-main); font-size: 1.2rem; font-weight: 700; padding: 15px; border-radius: 15px; transition: 0.3s; opacity: 0; transform: translateX(30px); }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; transition: 0.3s; }
+        .nav-link-mobile:hover, .nav-link-mobile.active { background: var(--accent-bg); color: var(--primary); transform: translateX(10px); }
+        .mobile-menu.active .nav-link-mobile { opacity: 1; transform: translateX(0); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1); transition-delay: calc(0.1s * var(--i)); }
+        .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px); }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        /* --- GALLERY & CONTENT STYLES --- */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .work-hero { text-align: center; padding: 80px 5% 40px; background: transparent; margin-top: 20px; }
+        .work-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; line-height: 1.1; }
+        .work-title span { color: var(--primary); }
+        .work-desc { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.6; }
+
+        .gallery-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-bottom: 60px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+        .filter-btn { background: rgba(0,0,0,0.04); color: var(--text-muted); border: none; padding: 16px 40px; border-radius: 50px; font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 12px; }
+        [data-theme="dark"] .filter-btn { background: rgba(255,255,255,0.05); }
+        .filter-btn:hover { transform: translateY(-3px); }
+        
+        .filter-btn.btn-admin:hover { color: var(--btn-admin); background: rgba(30, 41, 59, 0.1); }
+        .filter-btn.btn-admin.active { background: var(--btn-admin); color: white; box-shadow: 0 10px 25px rgba(30, 41, 59, 0.4); }
+        [data-theme="dark"] .filter-btn.btn-admin.active { background: #475569; }
+        
+        .filter-btn.btn-tech:hover { color: var(--btn-workshop); background: rgba(245, 158, 11, 0.1); }
+        .filter-btn.btn-tech.active { background: var(--btn-workshop); color: white; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); }
+
+        .gallery-section { padding: 0 5% 80px; max-width: 1400px; margin: 0 auto; flex: 1; }
+        
+        /* --- EDITED GRID: FORCE 3 COLUMNS --- */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+        }
+        
+        .work-card { background: var(--surface); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-soft); transition: 0.4s ease; border: 1px solid var(--border); opacity: 0; animation: fadeUp 0.8s ease forwards; display: block; }
+        .work-card.hide { display: none; } 
+        .work-card.show { animation: fadeIn 0.5s ease forwards; }
+        .work-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-card); }
+        
+        .work-card.admin:hover { border-color: var(--btn-admin); }
+        .work-card.workshop:hover { border-color: var(--btn-workshop); }
+        
+        .work-img-wrapper { position: relative; overflow: hidden; height: 280px; }
+        .work-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease-in-out; }
+        .work-card:hover .work-img { transform: scale(1.08); }
+        
+        .work-tag { position: absolute; top: 20px; left: 20px; padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 2; }
+        .tag-admin { background: var(--btn-admin); }
+        .tag-workshop { background: var(--btn-workshop); }
+        
+        .work-caption { padding: 25px; background: var(--surface); border-top: 1px solid var(--border); position: relative; z-index: 2; }
+        .work-caption p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 500; }
+        .work-caption i { margin-right: 8px; }
+
+        /* --- Footer Styles --- */
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 70px 5% 40px; margin-top: auto; width: 100%; border-top: 5px solid var(--primary); position: relative; flex-shrink: 0; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; padding-top: 20px; text-align: left; }
+        .footer-col h4 { font-size: 1.3rem; margin-bottom: 30px; color: var(--primary-light); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+        .footer-col h4::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 40px; height: 3px; background: var(--primary); }
+        .footer-link { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); font-size: 1.05rem; line-height: 2.2; margin-bottom: 8px; text-decoration: none; transition: 0.3s; }
+        .footer-link i { font-size: 1.2rem; color: var(--primary-light); transition: 0.3s; width: 20px; text-align: center; }
+        .footer-link:hover { color: white; transform: translateX(5px); }
+        .footer-link:hover i { transform: scale(1.2); }
+        .footer-logo { height: 60px; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.9; }
+        .social-links { display: flex; gap: 15px; margin-top: 25px; }
+        .social-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; text-decoration: none; font-size: 1.1rem; }
+        .social-btn:hover { background: var(--primary); transform: translateY(-3px); }
+        .copyright { text-align: center; margin-top: 70px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; }
+
+        /* --- WhatsApp Button Style --- */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 35px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: pulse-green 2s infinite;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128c7e;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* --- MOBILE & RESPONSIVE TWEAKS --- */
+        @media (max-width: 1100px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 991px) {
+            .main-nav { display: none; }
+            .menu-btn { display: block; }
+            .header-right { gap: 15px; }
+
+            .footer-grid { 
+                grid-template-columns: 1fr 1fr; 
+                text-align: center; 
+                gap: 20px; 
+            }
+
+            .footer-grid > .footer-col:first-child {
+                grid-column: 1 / -1; 
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.05); 
+            }
+
+            .footer-col h4 { font-size: 1.1rem; margin-bottom: 20px; }
+            .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+            .footer-link { justify-content: center; font-size: 0.9rem; white-space: nowrap; }
+            .social-links { justify-content: center; }
+            
+            .work-title { font-size: 2.5rem; }
+            .gallery-nav { gap: 15px; }
+            .filter-btn { padding: 12px 20px; font-size: 0.9rem; width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            header, header.header-scrolled { height: 70px; padding: 0 15px; }
+            .logo-area { width: auto; height: 100%; }
+            .cate-logo { height: 120px; top: -15px; position: absolute; }
+            .atlas-logo { height: 32px; }
+            
+            .g-cluster-1-big, .g-cluster-2-big { display: none; }
+            .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
+            
+            .gallery-grid { grid-template-columns: 1fr; }
+            .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
+        }
+
+        @media (max-width: 400px) {
+            .cate-logo { height: 110px; top: -10px; }
+            .atlas-logo { height: 28px; }
+            .menu-btn { font-size: 1.4rem; }
+        }
+
+        .atlas-logo {
+            height: 55px; 
+            object-fit: contain;
+            transition: height 0.3s ease; 
+        }
+
+        @media (max-width: 768px) {
+            .atlas-logo {
+                height: 30px !important; 
+                width: auto; 
+                margin-top: 5px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gears-container">
+        <svg class="gear-svg g-cluster-1-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-1-small" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-2-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-2-small" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+    </div>
+
+    <header>
+        <div class="logo-area" onclick="goHome()" title="Go Home">
+            <img src="CATE.png" alt="CATE" class="cate-logo">
+        </div>
+        
+        <nav class="main-nav">
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="why-us.html" class="nav-link">Why Us?</a>
+            <a href="our-work.html" class="nav-link active">Our Work</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="atlas-container">
+                <img src="Atlas-Copco.png" alt="Atlas Copco" class="atlas-logo">
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mobile-links">
+            <a href="about.html" class="nav-link-mobile" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+            <a href="why-us.html" class="nav-link-mobile" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+            <a href="our-work.html" class="nav-link-mobile active" style="--i:4;"><i class="fa-solid fa-people-group"></i> <span>Our Work</span></a>
+            <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+        </div>
+    </div>
+
+    <div class="work-hero reveal active">
+        <h1 class="work-title">Cate in <span>Action</span></h1>
+        <p class="work-desc">A behind-the-scenes look at our teams delivering excellence. From strategic planning in the office to precision engineering in the workshop and on-site.</p>
+        
+        <div class="gallery-nav">
+            <button class="filter-btn btn-admin active" onclick="filterSelection('admin', this)">
+                <i class="fa-solid fa-briefcase"></i> Administration & Sales
+            </button>
+            <button class="filter-btn btn-tech" onclick="filterSelection('workshop', this)">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Workshop & Technical
+            </button>
+        </div>
+    </div>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="Strategic Meeting" class="work-img">
+                    <span class="work-tag tag-admin">Sales Strategy</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-chart-line" style="color:var(--btn-admin);"></i> Our sales team discussing tailored solutions for new industrial partners.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=800&auto=format&fit=crop" alt="Customer Support" class="work-img">
+                    <span class="work-tag tag-admin">Client Support</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-headset" style="color:var(--btn-admin);"></i> Administration team coordinating immediate support for existing customers.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop" alt="Project Planning" class="work-img">
+                    <span class="work-tag tag-admin">Project Planning</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-map" style="color:var(--btn-admin);"></i> Mapping out large-scale installation projects and timelines.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop" alt="Business Analytics" class="work-img">
+                    <span class="work-tag tag-admin">Business Analytics</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-chart-pie" style="color:var(--btn-admin);"></i> Analyzing market trends to optimize our service delivery.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop" alt="Team Collaboration" class="work-img">
+                    <span class="work-tag tag-admin">Team Collaboration</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-users" style="color:var(--btn-admin);"></i> Inter-departmental meetings ensuring seamless workflow execution.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop" alt="Financial Planning" class="work-img">
+                    <span class="work-tag tag-admin">Financial Planning</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-coins" style="color:var(--btn-admin);"></i> Structuring budget-friendly proposals for long-term investments.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?q=80&w=800&auto=format&fit=crop" alt="Contract Negotiation" class="work-img">
+                    <span class="work-tag tag-admin">Contracts</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-handshake" style="color:var(--btn-admin);"></i> Securing mutually beneficial agreements with top industrial factories.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" alt="Training" class="work-img">
+                    <span class="work-tag tag-admin">Staff Training</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-chalkboard-user" style="color:var(--btn-admin);"></i> Continuous learning programs to keep our sales team at the forefront.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop" alt="Global Logistics" class="work-img">
+                    <span class="work-tag tag-admin">Logistics</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-globe" style="color:var(--btn-admin);"></i> Coordinating the import and distribution of genuine Atlas Copco parts.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop" alt="Quality Assurance" class="work-img">
+                    <span class="work-tag tag-admin">Quality Assurance</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-check-circle" style="color:var(--btn-admin);"></i> Auditing operational processes to guarantee premium client service.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" alt="Executive Board" class="work-img">
+                    <span class="work-tag tag-admin">Management</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-user-tie" style="color:var(--btn-admin);"></i> Executive team shaping the vision and future expansion of CATE.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=800&auto=format&fit=crop" alt="Marketing Strategy" class="work-img">
+                    <span class="work-tag tag-admin">Marketing</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-bullseye" style="color:var(--btn-admin);"></i> Launching targeted campaigns to reach new sectors and industries.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1664575602276-acd073f104c1?q=80&w=800&auto=format&fit=crop" alt="B2B Relations" class="work-img">
+                    <span class="work-tag tag-admin">B2B Relations</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-building" style="color:var(--btn-admin);"></i> Fostering strong, long-lasting partnerships with corporate entities.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=800&auto=format&fit=crop" alt="Supply Chain" class="work-img">
+                    <span class="work-tag tag-admin">Supply Chain</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-truck" style="color:var(--btn-admin);"></i> Managing inventory efficiently to ensure rapid parts availability.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="IT Infrastructure" class="work-img">
+                    <span class="work-tag tag-admin">IT Infrastructure</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-desktop" style="color:var(--btn-admin);"></i> Developing digital solutions and systems to streamline our operations.</p>
+                </div>
+            </div>
+
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800&auto=format&fit=crop" alt="Workshop Repair" class="work-img">
+                    <span class="work-tag tag-workshop">Overhaul Service</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-wrench" style="color:var(--btn-workshop);"></i> Certified technicians performing a complete air-end overhaul in our workshop.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop" alt="On-Site Diagnostic" class="work-img">
+                    <span class="work-tag tag-workshop">On-Site Diagnostics</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-laptop-medical" style="color:var(--btn-workshop);"></i> Running advanced diagnostic tests at a client's facility to ensure peak performance.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1531973576160-7125cd663d86?q=80&w=800&auto=format&fit=crop" alt="Piping Installation" class="work-img">
+                    <span class="work-tag tag-workshop">AIRnet Installation</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-network-wired" style="color:var(--btn-workshop);"></i> Installing efficient aluminum piping systems for clean air delivery.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop" alt="Routine Maintenance" class="work-img">
+                    <span class="work-tag tag-workshop">Maintenance</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-clipboard-list" style="color:var(--btn-workshop);"></i> Executing 4000-hour and 8000-hour preventive maintenance routines.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop" alt="Safety Inspection" class="work-img">
+                    <span class="work-tag tag-workshop">Safety Inspection</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-helmet-safety" style="color:var(--btn-workshop);"></i> Rigorous safety checks ensuring all pressure vessels meet local regulations.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1580983546538-23c2a6881c16?q=80&w=800&auto=format&fit=crop" alt="Parts Replacement" class="work-img">
+                    <span class="work-tag tag-workshop">Part Replacement</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-cogs" style="color:var(--btn-workshop);"></i> Exchanging worn out components with 100% genuine replacement parts.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1611077544795-c9b20b22e118?q=80&w=800&auto=format&fit=crop" alt="System Calibration" class="work-img">
+                    <span class="work-tag tag-workshop">Calibration</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-scale-balanced" style="color:var(--btn-workshop);"></i> Fine-tuning pressure settings and sensor readings for maximum efficiency.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop" alt="Energy Audit" class="work-img">
+                    <span class="work-tag tag-workshop">Energy Audit</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-bolt" style="color:var(--btn-workshop);"></i> Monitoring power consumption to help clients reduce their energy bills.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1620023640037-ce22b1c85d88?q=80&w=800&auto=format&fit=crop" alt="Leak Detection" class="work-img">
+                    <span class="work-tag tag-workshop">Leak Detection</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-droplet-slash" style="color:var(--btn-workshop);"></i> Utilizing ultrasonic tools to pinpoint and eliminate compressed air leaks.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1508873535684-277a3ceb9821?q=80&w=800&auto=format&fit=crop" alt="Electrical Diagnostics" class="work-img">
+                    <span class="work-tag tag-workshop">Electrical</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-plug" style="color:var(--btn-workshop);"></i> Troubleshooting and repairing complex control panel and inverter faults.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop" alt="Component Welding" class="work-img">
+                    <span class="work-tag tag-workshop">Fabrication</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-fire-burner" style="color:var(--btn-workshop);"></i> Custom welding and fabrication for specialized receiver tanks and mounts.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?q=80&w=800&auto=format&fit=crop" alt="Precision Measurement" class="work-img">
+                    <span class="work-tag tag-workshop">Precision Check</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-ruler" style="color:var(--btn-workshop);"></i> Taking micro-measurements to ensure perfect alignment of rotating parts.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" alt="Heavy Lifting" class="work-img">
+                    <span class="work-tag tag-workshop">Installation</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-truck-ramp-box" style="color:var(--btn-workshop);"></i> Safe rigging and placement of heavy industrial compressors on site.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1635405074683-96d6921a2a68?q=80&w=800&auto=format&fit=crop" alt="Emergency Repair" class="work-img">
+                    <span class="work-tag tag-workshop">24/7 Response</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-truck-medical" style="color:var(--btn-workshop);"></i> Rapid deployment of our technical fleet to handle breakdown emergencies.</p>
+                </div>
+            </div>
+
+            <div class="work-card workshop" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1574689211272-bc14e289e223?q=80&w=800&auto=format&fit=crop" alt="Quality Testing" class="work-img">
+                    <span class="work-tag tag-workshop">Fluid Analysis</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-vial" style="color:var(--btn-workshop);"></i> Taking oil samples for lab analysis to predict and prevent internal wear.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="footer-section">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="Only CATE.png" class="footer-logo" alt="CATE">
+                <p class="footer-text">Advanced Air Solutions for a better tomorrow. Quality, Reliability, and Efficiency.</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Our Locations</h4>
+                <a href="https://maps.app.goo.gl/CmwhsiRM15hQeUJn7?g_st=aw" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> 10th of Ramadan</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=29.9528662,30.9135371" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> 6th of October</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=30.386,30.511" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> Sadat City</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <a href="mailto:info@cate-eg.com" class="footer-link"><i class="fa-solid fa-envelope"></i> info@cate-eg.com</a>
+                <a href="tel:020021234567" class="footer-link"><i class="fa-solid fa-phone"></i> 02.002.123.4567</a>
+            </div>
+        </div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman khedr</div>
+    </div>
+    <a href="https://wa.me/201023706078" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        // Init Tilt
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 10, speed: 400, glare: true, "max-glare": 0.2, scale: 1.02 });
+
+        // --- FILTER FUNCTIONALITY ---
+        function filterSelection(c, btn) {
+            var x, i;
+            x = document.getElementsByClassName("work-card");
+            
+            // Remove active class from all buttons
+            var btns = document.getElementsByClassName("filter-btn");
+            for (i = 0; i < btns.length; i++) {
+                btns[i].classList.remove("active");
+            }
+            // Add active to current btn
+            if(btn) btn.classList.add("active");
+
+            // Filter items
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                RemoveClass(x[i], "show");
+                if (x[i].className.indexOf(c) > -1) {
+                    AddClass(x[i], "show");
+                    x[i].style.display = "block";
+                } else {
+                    x[i].style.display = "none";
+                }
+            }
+        }
+
+        function AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+            }
+        }
+
+        function RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);     
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // Initialize (Default to 'admin' since 'all' is removed)
+        filterSelection("admin", document.querySelector('.filter-btn.active'));
+
+        // Theme Logic
+        let currentTheme = localStorage.getItem('cate_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        function goHome() { window.location.href = 'index.html'; }
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+
+        // Scroll Reveal
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal, .work-card");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) reveals[i].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+        
+        // Header Scroll Effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(header) header.classList.toggle('header-scrolled', window.scrollY > 0);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CATE - Rental & Trade-in</title>
+    
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary: #006F8F;
+            --primary-dark: #005a75;
+            --primary-light: #009ebf;
+            --accent-blue: #3b82f6;
+            --bg-body: #f8fafc;
+            --surface-color: #ffffff;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --dark-footer: #001f2b;
+            --accent-bg: rgba(0, 111, 143, 0.08);
+            
+            /* Gradients for this page */
+            --g-main: linear-gradient(135deg, #006F8F 0%, #0ea5e9 100%);
+            --g-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --g-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --g-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --g-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --g-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --g-cyan: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Outfit', 'Inter', 'Cairo', sans-serif;
+            background-color: var(--bg-body); color: var(--text-main);
+            margin: 0; padding: 0; transition: background-color 0.4s ease;
+            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Gears Animation (Standard) --- */
+        .gears-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .gear-svg { position: absolute; fill: none; stroke: #009DC2; stroke-width: 15px; opacity: 0.08; }
+        @keyframes rotate-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotate-ccw { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+        .g-cluster-1-big { top: -120px; right: -120px; width: 650px; height: 650px; animation: rotate-cw 80s linear infinite; }
+        .g-cluster-1-small { top: 380px; right: 80px; width: 250px; height: 250px; animation: rotate-ccw 30s linear infinite; opacity: 0.1; }
+        .g-cluster-2-big { bottom: -100px; left: -100px; width: 500px; height: 500px; animation: rotate-ccw 60s linear infinite; }
+
+        /* --- HEADER STYLES (MATCHING INDEX.HTML) --- */
+        header { 
+            background-color: var(--surface-color); 
+            padding: 0 5%; 
+            display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--border-color); 
+            transition: all 0.3s ease; 
+            height: 90px;
+            overflow: visible;
+        }
+
+        header.header-scrolled {
+            background-color: var(--surface-color) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: none;
+            height: 90px;
+        }
+
+        .logo-area { 
+            position: relative; display: flex; align-items: center; 
+            width: 210px; height: 100%; cursor: pointer; 
+        }
+
+        .cate-logo { 
+            position: absolute; top: -25px; left: 0;
+            height: 175px; width: auto; object-fit: contain; 
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); 
+            z-index: 1100; transition: transform 0.3s ease;
+        }
+        .logo-area:hover .cate-logo { transform: scale(1.02); }
+        
+        .main-nav { display: flex; gap: 30px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 1rem; transition: 0.3s; position: relative; letter-spacing: 0.3px; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--primary); transition: 0.3s; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .atlas-container { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s; }
+        .atlas-container:hover { transform: scale(1.05); }
+        .atlas-logo { height: 45px; object-fit: contain; }
+
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -320px; width: 320px; max-width: 85vw; height: 100vh; background: var(--surface-color); box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 1001; transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); padding: 30px; display: flex; flex-direction: column; gap: 40px; border-top-left-radius: 30px; border-bottom-left-radius: 30px; }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* UPDATED: Mobile Logo (Color & Bigger) */
+        .mobile-logo { height: 60px; filter: none; opacity: 1; transition: 0.3s; }
+        
+        .close-menu { font-size: 1.5rem; color: var(--text-muted); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); }
+        .close-menu:hover { background: var(--primary); color: white; transform: rotate(90deg); }
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .nav-link-mobile { display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text-main); font-size: 1.2rem; font-weight: 700; padding: 15px; border-radius: 15px; transition: 0.3s; opacity: 0; transform: translateX(30px); }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; transition: 0.3s; }
+        .nav-link-mobile:hover { background: var(--accent-bg); color: var(--primary); transform: translateX(10px); }
+        .mobile-menu.active .nav-link-mobile { opacity: 1; transform: translateX(0); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1); transition-delay: calc(0.1s * var(--i)); }
+        .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px); }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        /* --- CONTENT STYLES (Page Specific) --- */
+        .page-container { 
+            max-width: 1350px; margin: 0 auto; padding: 80px 5%; 
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; 
+            align-items: flex-start; 
+            min-height: 85vh; position: relative; 
+        }
+        
+        .text-content { display: flex; flex-direction: column; }
+        .page-title { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 40px; background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; animation: fadeUp 0.8s ease forwards; }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px; line-height: 1.6; opacity: 0; animation: fadeUp 0.8s ease forwards 0.1s; }
+        
+        .section-header { font-size: 1.1rem; font-weight: 700; margin: 30px 0 20px; color: var(--text-main); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+        .section-header::before { content: ''; width: 20px; height: 3px; background: var(--primary); border-radius: 10px; }
+        
+        .features-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .features-list li { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 12px; font-size: 1.05rem; color: var(--text-muted); padding: 10px 15px; border-radius: 12px; transition: 0.3s; opacity: 0; animation: fadeUp 0.6s ease forwards; }
+        .features-list li:hover { background: rgba(255,255,255,0.5); transform: translateX(10px); color: var(--text-main); }
+        .check-box { width: 24px; height: 24px; background: rgba(16, 185, 129, 0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 40px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s; }
+        .service-card { background: var(--surface); border: 1px solid var(--border); padding: 15px; border-radius: 16px; display: flex; align-items: flex-start; gap: 15px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: default; transform-style: preserve-3d; transform: perspective(1000px); }
+        .service-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: var(--shadow-card); border-color: var(--primary); }
+        
+        .s-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; flex-shrink: 0; transition: 0.3s; margin-top: 3px; }
+        .service-card:hover .s-icon { animation: pulse-icon 1.5s infinite; transform: translateZ(20px); }
+        .s-info h4 { margin: 0 0 5px 0; font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+        .s-info p { margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        
+        .info-note { background: rgba(0, 111, 143, 0.05); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 8px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 40px; font-style: italic; opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s; }
+        
+        .pills-wrapper { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; }
+        .pill-item { background: var(--surface-color); border: 1px solid var(--border-color); padding: 12px 25px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; }
+        .pill-item:hover { transform: translateY(-3px); border-color: var(--primary); color: var(--primary); }
+        .pill-item i { color: #10b981; }
+        
+        .action-row { display: flex; gap: 20px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease forwards 0.7s; }
+        .btn-fill { background: var(--g-main); color: white; padding: 16px 40px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 111, 143, 0.2); display: flex; align-items: center; gap: 10px; }
+        .btn-fill:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 111, 143, 0.4); }
+        
+        .visual-side { position: relative; opacity: 0; animation: fadeRight 1s ease forwards 0.5s; margin-top: 350px; }
+        .image-frame { position: relative; border-radius: 40px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); transform: rotate(-2deg); transition: 0.5s ease; border: 8px solid var(--surface-color); }
+        .visual-side:hover .image-frame { transform: rotate(0) scale(1.02); }
+        .main-img { width: 100%; height: auto; display: block; }
+        
+        .glass-badge { position: absolute; bottom: 40px; left: -30px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px); padding: 15px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.1); z-index: 2; display: flex; align-items: center; gap: 15px; }
+        .badge-logo-img { height: 35px; width: auto; object-fit: contain; margin-right: 5px; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse-icon { 0% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 111, 143, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0); } }
+
+        /* --- FOOTER --- */
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 70px 5% 40px; margin-top: 50px; width: 100%; border-top: 5px solid var(--primary); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; padding-top: 20px; text-align: left; }
+        .footer-col h4 { font-size: 1.3rem; margin-bottom: 30px; color: var(--primary-light); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+        .footer-col h4::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 40px; height: 3px; background: var(--primary); }
+        .footer-link { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); font-size: 1.05rem; line-height: 2.2; margin-bottom: 8px; text-decoration: none; transition: 0.3s; }
+        .footer-link i { font-size: 1.2rem; color: var(--primary-light); width: 20px; text-align: center; }
+        .footer-link:hover { color: white; transform: translateX(5px); }
+        .footer-link:hover i { transform: scale(1.2); }
+        .footer-logo { height: 60px; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.9; }
+        .social-links { display: flex; gap: 15px; margin-top: 25px; }
+        .social-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; text-decoration: none; font-size: 1.1rem; }
+        .social-btn:hover { background: var(--primary); transform: translateY(-3px); }
+        .copyright { text-align: center; margin-top: 70px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; }
+/* --- WhatsApp Button Style --- */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 35px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: pulse-green 2s infinite;
+}
+
+.whatsapp-btn:hover {
+    background-color: #128c7e;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+        /* --- MOBILE & RESPONSIVE TWEAKS --- */
+        @media (max-width: 991px) {
+            .main-nav { display: none; }
+            .menu-btn { display: block; }
+            .header-right { gap: 15px; }
+            
+            /* UPDATED: Mobile Footer Grid (Two Columns) */
+            .footer-grid { 
+                grid-template-columns: 1fr 1fr; /* تقسيم الفوتر لعمودين */
+                text-align: center; 
+                gap: 20px; 
+            }
+
+            /* أول عمود (اللوجو والسوشيال) ياخد العرض كامل */
+            .footer-grid > .footer-col:first-child {
+                grid-column: 1 / -1; 
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.05); 
+            }
+
+            .footer-col h4 { font-size: 1.1rem; margin-bottom: 20px; }
+            .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+            .footer-link { justify-content: center; font-size: 0.9rem; white-space: nowrap; }
+            .social-links { justify-content: center; }
+
+            /* Page Specific Mobile */
+            .page-container { grid-template-columns: 1fr; padding-top: 40px; }
+            .visual-side { order: -1; margin-bottom: 50px; margin-top: 0; }
+            .image-frame { transform: rotate(0); }
+            .glass-badge { left: 50%; transform: translateX(-50%); bottom: -20px; width: 80%; justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            header, header.header-scrolled { height: 70px; padding: 0 15px; }
+            
+            /* Logo resizing for tablet/mobile */
+            .logo-area { width: auto; height: 100%; }
+            .cate-logo { 
+                height: 120px; 
+                top: -15px; 
+                position: absolute;
+            }
+            .atlas-logo { height: 32px; }
+            
+            .g-cluster-1-big, .g-cluster-2-big { display: none; }
+            .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
+            .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
+        }
+
+        @media (max-width: 400px) {
+            /* Small mobile adjustments */
+            /* UPDATED: Bigger Logo for small screens */
+            .cate-logo { height: 110px; top: -10px; }
+            .atlas-logo { height: 28px; }
+            .menu-btn { font-size: 1.4rem; }
+            
+            /* Smaller footer text on tiny screens */
+            .footer-link { font-size: 0.8rem; }
+        }
+
+        .atlas-logo {
+    height: 55px; 
+    object-fit: contain;
+    transition: height 0.3s ease; 
+}
+
+/* تعديل حجم لوجو أطلس للموبايل فقط */
+@media (max-width: 768px) {
+    .atlas-logo {
+        height: 30px !important; /* جربنا نصغره لـ 30 بيكسل بدل 45 */
+        width: auto; /* عشان يحافظ على أبعاد الصورة */
+        margin-top: 5px; /* تظبيط المسافة لو محتاج */
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="gears-container">
+        <svg class="gear-svg g-cluster-1-big" viewBox="0 0 512 512">
+            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
+        </svg>
+    </div>
+
+    <header>
+        <div class="logo-area" onclick="window.location.href='index.html'" title="Go Home">
+            <img src="CATE.png" alt="CATE" class="cate-logo">
+        </div>
+        
+        <nav class="main-nav">
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="why-us.html" class="nav-link">Why Us?</a>
+            <a href="our-work.html" class="nav-link">Our Work</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="atlas-container">
+                <img src="Atlas-Copco.png" alt="Atlas Copco" class="atlas-logo">
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mobile-links">
+            <a href="about.html" class="nav-link-mobile" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+            <a href="why-us.html" class="nav-link-mobile" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+            <a href="our-work.html" class="nav-link-mobile" style="--i:4;"><i class="fa-solid fa-people-group"></i> <span>Our Work</span></a>
+            <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+        </div>
+    </div>
+    <section class="page-container">
+        
+        <div class="text-content">
+            <h1 class="page-title">Cate Rental & Trade-In<br>Compressors & Dryers</h1>
+            <p class="page-subtitle">Flexible, Cost-Effective Air Solutions - Reliable compressed air for temporary needs, maintenance backups, or equipment upgrades.</p>
+            
+            <div class="section-header">Benefits</div>
+            <ul class="features-list">
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Fast Rentals</strong> - Immediate access to high-performance equipment</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Latest Tech</strong> - Energy-efficient, reliable Atlas Copco units</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Trade-In Program</strong> - Upgrade old equipment & get value in return</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>24/7 Support</strong> - Expert service to minimize downtime</li>
+            </ul>
+
+            <div class="section-header">Available Rentals</div>
+            <div class="services-grid">
+                <div class="service-card" data-tilt>
+                    <div class="s-icon" style="background:var(--g-blue);"><i class="fa-solid fa-wind"></i></div>
+                    <div class="s-info"><h4>Air Compressors</h4><p>Rotary screw, piston, and VSD models</p></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon" style="background:var(--g-purple);"><i class="fa-solid fa-droplet-slash"></i></div>
+                    <div class="s-info"><h4>Air Dryers</h4><p>Refrigerated, desiccant, and membrane types</p></div>
+                </div>
+            </div>
+
+            <div class="section-header">Trade-In & Upgrade</div>
+            <div class="services-grid">
+                <div class="service-card" data-tilt>
+                    <div class="s-icon" style="background:var(--g-orange);"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <div class="s-info"><h4>Get Value for Old Units</h4></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon" style="background:var(--g-green);"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="s-info"><h4>Energy Savings</h4></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon" style="background:var(--g-main);"><i class="fa-solid fa-wrench"></i></div>
+                    <div class="s-info"><h4>Lower Maintenance</h4></div>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <i class="fa-solid fa-circle-info"></i> <strong>Did you know?</strong> Trading in for a VSD (Variable Speed Drive) compressor can save you up to 50% in energy costs compared to older fixed-speed models.
+            </div>
+
+            <div class="section-header">Industries Served</div>
+            <div class="pills-wrapper">
+                <div class="pill-item"><i class="fa-solid fa-industry"></i> Manufacturing</div>
+                <div class="pill-item"><i class="fa-solid fa-trowel-bricks"></i> Construction</div>
+                <div class="pill-item"><i class="fa-solid fa-oil-well"></i> Oil & Gas</div>
+                <div class="pill-item"><i class="fa-solid fa-pills"></i> Pharma</div>
+                <div class="pill-item"><i class="fa-solid fa-car"></i> Automotive</div>
+            </div>
+
+            <div class="page-subtitle" style="font-size:0.9rem; margin-top:20px;">
+                Contact Us for a Custom Solution! [Your Number] | [Your Email] | [Your Website] <br>
+                Flexible rental terms and competitive trade-in values available.
+            </div>
+
+            <div class="action-row">
+                <button class="btn-fill" style="width: 100%; justify-content: center;" onclick="window.location.href='contact.html'">Request Quote</button>
+            </div>
+        </div>
+
+        <div class="visual-side">
+            <div class="image-frame" data-tilt>
+                <img src="Rental-Equipment.png" alt="Rental Equipment" class="main-img">
+            </div>
+            
+            <div class="glass-badge">
+                <img src="Atlas-Copco.png" alt="Atlas Copco Logo" class="badge-logo-img">
+                <div>
+                    <div style="font-weight:700; font-size:1rem; color:var(--text-main);">Atlas Copco</div>
+                    <div style="font-size:0.85rem; color:var(--text-muted);">Authorized Distributor</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="footer-section">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="Only CATE.png" class="footer-logo" alt="CATE">
+                <p class="footer-text">Advanced Air Solutions for a better tomorrow. Quality, Reliability, and Efficiency.</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Our Locations</h4>
+                <a href="https://maps.app.goo.gl/CmwhsiRM15hQeUJn7?g_st=aw" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> 10th of Ramadan</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=29.9528662,30.9135371" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> 6th of October</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=30.386,30.511" target="_blank" class="footer-link"><i class="fa-solid fa-location-dot"></i> Sadat City</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <a href="mailto:info@cate-eg.com" class="footer-link"><i class="fa-solid fa-envelope"></i> info@cate-eg.com</a>
+                <a href="tel:020021234567" class="footer-link"><i class="fa-solid fa-phone"></i> 02.002.123.4567</a>
+            </div>
+        </div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman khedr</div>
+    </div>
+    <a href="https://wa.me/201023706078" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        // Init Tilt Effect
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.15,
+            scale: 1.02
+        });
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+        
+        // Scroll Header Logic
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(header) header.classList.toggle('header-scrolled', window.scrollY > 0);
+        });
+
+        // Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        document.addEventListener('DOMContentLoaded', reveal);
+    </script>
+
+</body>
+</html>
