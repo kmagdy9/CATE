@@ -435,34 +435,71 @@
         }
         .chat-reset:hover, .chat-close:hover { opacity: 0.8; }
 
-        /* جسم الشات */
+        /* جسم الشات الجديد */
         .chat-body {
             flex: 1;
-            padding: 15px;
+            padding: 20px 15px;
             overflow-y: auto;
             background: #f8fafc;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             scrollbar-width: thin;
+            scroll-behavior: smooth;
         }
 
-        /* الرسايل */
+        /* تصميم الرسايل الاحترافي */
+        .message-row {
+            display: flex;
+            width: 100%;
+            margin-bottom: 5px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .bot-row {
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .user-row {
+            justify-content: flex-end;
+        }
+
+        .bot-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .bot-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .message {
-            max-width: 85%;
+            max-width: 75%;
             padding: 12px 16px;
-            border-radius: 15px;
             font-size: 14px;
             line-height: 1.5;
             position: relative;
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .bot-message {
-            background: #e2e8f0;
+            background: #ffffff;
             color: #334155;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px 18px 18px 4px; /* زوايا زي الواتساب */
         }
 
         .bot-message a {
@@ -473,10 +510,37 @@
         }
 
         .user-message {
-            background: #006F8F;
+            background: linear-gradient(135deg, #006F8F, #009ebf);
             color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
+            border-radius: 18px 18px 4px 18px; /* زوايا زي الواتساب */
+        }
+
+        /* انيميشن الـ Typing */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px 18px 18px 4px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
         /* الاختيارات */
@@ -485,30 +549,50 @@
             flex-direction: column;
             gap: 8px;
             margin-top: 5px;
+            margin-left: 38px; /* عشان تكون متناسقة مع صورة البوت */
+            animation: fadeIn 0.5s ease forwards;
         }
 
         .option-btn {
             background: white;
             border: 1px solid #006F8F;
             color: #006F8F;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 15px;
+            border-radius: 12px;
             font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
             font-weight: 600;
             text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .option-btn i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: #009ebf;
+            transition: color 0.3s ease;
         }
 
         .option-btn:hover {
             background: #006F8F;
             color: white;
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0, 111, 143, 0.2);
         }
 
-        /* مكان كتابة النصوص المضاف جديد */
+        .option-btn:hover i {
+            color: white;
+        }
+
+        /* مكان كتابة النصوص */
         .chat-input-area {
             display: none;
-            padding: 10px 15px;
+            padding: 15px;
             background: white;
             border-top: 1px solid #e2e8f0;
             align-items: center;
@@ -517,29 +601,32 @@
 
         .chat-input-area.active {
             display: flex;
+            animation: fadeIn 0.4s ease forwards;
         }
 
         .chat-input-area input {
             flex: 1;
-            padding: 12px 15px;
+            padding: 12px 18px;
             border: 1px solid #cbd5e1;
-            border-radius: 20px;
+            border-radius: 25px;
             outline: none;
             font-family: inherit;
             font-size: 14px;
             transition: 0.3s;
+            background: #f8fafc;
         }
 
         .chat-input-area input:focus {
             border-color: #006F8F;
-            box-shadow: 0 0 0 2px rgba(0, 111, 143, 0.1);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 111, 143, 0.1);
         }
 
         .chat-input-area button {
             background: #006F8F;
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -547,14 +634,21 @@
             border: none;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 111, 143, 0.2);
+        }
+
+        .chat-input-area button i {
+            font-size: 16px;
+            margin-right: 2px;
         }
 
         .chat-input-area button:hover {
             background: #005a75;
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 4px 15px rgba(0, 111, 143, 0.3);
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Mobile adjustments */
         @media (max-width: 991px) {
@@ -726,9 +820,9 @@
                 <p>Our commitment to excellence and innovation.</p>
             </div>
             <div class="what-doing-grid">
-                <div class="doing-card"><div class="bubble-text">Our aim is to provide maximum equipment life time throughout providing maintenance, genuine spare parts and rental compressors.</div><div class="doing-icon-wrapper"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="doing-title">Services</div><button class="btn-pill-outline" onclick="window.location.href='maintenance.html'">More Info</button></div>
-                <div class="doing-card"><div class="bubble-text">A wide range of reliable, energy-efficient and cost-effective industrial air compressors, for all your low, medium and high-pressure applications.</div><div class="doing-icon-wrapper" style="background: linear-gradient(135deg, #a5f3fc 0%, #0ea5e9 100%);"><i class="fa-solid fa-cubes-stacked" style="color:#0369a1;"></i></div><div class="doing-title">Products</div><button class="btn-pill-outline" onclick="window.location.href='buy-new.html'">More Info</button></div>
-                <div class="doing-card"><div class="bubble-text">We like to stay close to our customers. By analyzing their needs, we continuously set new industry standards together.</div><div class="doing-icon-wrapper" style="background: linear-gradient(135deg, #a5f3fc 0%, #0284c7 100%);"><i class="fa-solid fa-bullseye" style="color:#075985;"></i></div><div class="doing-title">Our Mission</div><button class="btn-pill-outline" onclick="window.location.href='about.html'">More Info</button></div>
+                <div class="doing-card"><div class="bubble-text">Our aim is to provide maximum equipment life time throughout providing maintenance, genuine spare parts and rental compressors.</div><div class="doing-icon-wrapper"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="doing-title">Services</div></div>
+                <div class="doing-card"><div class="bubble-text">A wide range of reliable, energy-efficient and cost-effective industrial air compressors, for all your low, medium and high-pressure applications.</div><div class="doing-icon-wrapper" style="background: linear-gradient(135deg, #a5f3fc 0%, #0ea5e9 100%);"><i class="fa-solid fa-cubes-stacked" style="color:#0369a1;"></i></div><div class="doing-title">Products</div></div>
+                <div class="doing-card"><div class="bubble-text">We like to stay close to our customers. By analyzing their needs, we continuously set new industry standards together.</div><div class="doing-icon-wrapper" style="background: linear-gradient(135deg, #a5f3fc 0%, #0284c7 100%);"><i class="fa-solid fa-bullseye" style="color:#075985;"></i></div><div class="doing-title">Our Mission</div></div>
             </div>
         </div>
 
@@ -784,7 +878,10 @@
     <div class="chat-window" id="cateChatWindow">
         <div class="chat-header">
             <span style="display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-robot"></i> CATE Assistant
+                <div style="background:white; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" style="width:100%; object-fit:cover; padding: 2px;">
+                </div>
+                CATE Assistant
             </span>
             <div class="header-controls">
                 <span class="chat-reset" onclick="startChatBot()" title="Start Over">
@@ -851,7 +948,7 @@
         }
 
         /* -----------------------------------------------------------------
-           --- NEW CHATBOT LOGIC START --- 
+           --- ADVANCED CHATBOT LOGIC START --- 
         ----------------------------------------------------------------- */
         const chatBody = document.getElementById('chatBody');
         const chatWindow = document.getElementById('cateChatWindow');
@@ -867,76 +964,76 @@
         const chatFlow = {
             start: {
                 messages: [
-                    "Welcome in CATE Atlas Copco Egypt! 🇪🇬",
-                    "Hi I am your assistant for today - Is there something in particular that you are looking for today?"
+                    "Welcome to CATE - Atlas Copco Egypt! 🇪🇬 👋",
+                    "Hi, I'm the CATE virtual assistant. 🤖 How can I help you today?"
                 ],
                 options: [
-                    { text: "Quote for air compressor", next: "pressure", save: {field: "Request", val: "Air Compressor Quote"} },
-                    { text: "Quote for parts", next: "contact_name", save: {field: "Request", val: "Parts Quote"} },
-                    { text: "Quote for service", next: "contact_name", save: {field: "Request", val: "Service Quote"} },
-                    { text: "Need a manual", next: "contact_name", save: {field: "Request", val: "Manual Needed"} },
-                    { text: "Technical support", next: "contact_name", save: {field: "Request", val: "Technical Support"} },
-                    { text: "Quote for gas generator", next: "contact_name", save: {field: "Request", val: "Gas Generator Quote"} }
+                    { icon: "fa-solid fa-compress", text: "Quote for Air Compressor", next: "pressure", save: {field: "Request", val: "Air Compressor Quote"} },
+                    { icon: "fa-solid fa-gears", text: "Quote for Parts", next: "contact_name", save: {field: "Request", val: "Parts Quote"} },
+                    { icon: "fa-solid fa-screwdriver-wrench", text: "Quote for Service", next: "contact_name", save: {field: "Request", val: "Service Quote"} },
+                    { icon: "fa-solid fa-book", text: "Need a Manual", next: "contact_name", save: {field: "Request", val: "Manual Needed"} },
+                    { icon: "fa-solid fa-headset", text: "Technical Support", next: "contact_name", save: {field: "Request", val: "Technical Support"} },
+                    { icon: "fa-solid fa-bolt", text: "Quote for Gas Generator", next: "contact_name", save: {field: "Request", val: "Gas Generator Quote"} }
                 ]
             },
             pressure: {
-                messages: ["What is your operating pressure? (preferably in bar)"],
+                messages: ["What is your operating pressure? ⚡ (preferably in bar)"],
                 options: [
-                    { text: "0-4 bar", next: "flow", save: {field: "Pressure", val: "0-4 bar"} },
-                    { text: "5-13 bar", next: "flow", save: {field: "Pressure", val: "5-13 bar"} },
-                    { text: "more than 13 bar", next: "flow", save: {field: "Pressure", val: "> 13 bar"} }
+                    { icon: "fa-solid fa-gauge-low", text: "0-4 bar", next: "flow", save: {field: "Pressure", val: "0-4 bar"} },
+                    { icon: "fa-solid fa-gauge", text: "5-13 bar", next: "flow", save: {field: "Pressure", val: "5-13 bar"} },
+                    { icon: "fa-solid fa-gauge-high", text: "more than 13 bar", next: "flow", save: {field: "Pressure", val: "> 13 bar"} }
                 ]
             },
             flow: {
-                messages: ["How much flow do you think you'll need?"],
+                messages: ["How much flow do you think you'll need? 💨"],
                 options: [
-                    { text: "> 250l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "> 250l/s"} },
-                    { text: "< 250 l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "< 250l/s"} },
-                    { text: "Use kW instead", next: "contact_name", save: {field: "Flow", val: "Use kW"} }
+                    { icon: "fa-solid fa-arrow-up-right-dots", text: "> 250l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "> 250l/s"} },
+                    { icon: "fa-solid fa-arrow-down-short-wide", text: "< 250 l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "< 250l/s"} },
+                    { icon: "fa-solid fa-plug", text: "Use kW instead", next: "contact_name", save: {field: "Flow", val: "Use kW"} }
                 ]
             },
             contact_name: {
-                messages: ["Great, I just need a few contact details from you before I can pass this over to our team. Could I have your first and last name please?"],
+                messages: ["Great! 👍 I just need a few contact details from you before I can pass this over to our team. Could I have your first and last name please?"],
                 inputType: "text",
                 next: "company_name",
                 saveField: "Name"
             },
             company_name: {
-                messages: ["What is your company name, please?"],
+                messages: ["What is your company name, please? 🏢"],
                 inputType: "text",
                 next: "location_type",
                 saveField: "Company"
             },
             location_type: {
-                messages: ["What is your company location? We need to assign the right person for your location."],
+                messages: ["What is your company location? We need to assign the right person for your location. 📍"],
                 options: [
-                    { text: "Inside Egypt", next: "city", save: {field: "Location", val: "Inside Egypt"} },
-                    { text: "Outside Egypt", next: "email", save: {field: "Location", val: "Outside Egypt"} }
+                    { icon: "fa-solid fa-flag", text: "Inside Egypt", next: "city", save: {field: "Location", val: "Inside Egypt"} },
+                    { icon: "fa-solid fa-globe", text: "Outside Egypt", next: "email", save: {field: "Location", val: "Outside Egypt"} }
                 ]
             },
             city: {
-                messages: ["Which city, please?"],
+                messages: ["Which city, please? 🏙️"],
                 inputType: "text",
                 next: "email",
                 saveField: "City"
             },
             email: {
-                messages: ["Finally, what's your email?"],
+                messages: ["Almost done! What's your email? ✉️"],
                 inputType: "text",
                 next: "phone",
                 saveField: "Email"
             },
             phone: {
-                messages: ["To help you quicker, please leave your phone number"],
+                messages: ["To help you quicker, please leave your phone number 📱"],
                 inputType: "text",
                 next: "end_chat",
                 saveField: "Phone"
             },
             end_chat: {
                 messages: [
-                    "Thanks for sharing your details. Our team will get back to you shortly!",
+                    "Thanks for sharing your details! 🎉 Our team will get back to you shortly.",
                     "Your chat has ended.",
-                    "<a onclick='startChatBot()' style='cursor:pointer;'>To start a new chat, click here.</a>"
+                    "<a onclick='startChatBot()' style='cursor:pointer;'><i class='fa-solid fa-rotate-right'></i> Click here to start a new chat</a>"
                 ],
                 action: "send_whatsapp"
             }
@@ -967,17 +1064,40 @@
             renderNode('start');
         }
 
+        function showTypingIndicator() {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'message-row bot-row typing-row';
+            
+            rowDiv.innerHTML = `
+                <div class="bot-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot" style="padding: 2px;">
+                </div>
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            
+            chatBody.appendChild(rowDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return rowDiv;
+        }
+
         async function renderNode(nodeId) {
             currentNode = nodeId;
             const node = chatFlow[nodeId];
-            chatInputArea.classList.remove('active'); // Hide input by default
+            chatInputArea.classList.remove('active'); 
             
-            // Loop and display bot messages with a slight delay
             for (let i = 0; i < node.messages.length; i++) {
-                await addBotMessageWithDelay(node.messages[i], 600);
+                const typingEl = showTypingIndicator();
+                // Delay to simulate typing (longer messages take slightly longer)
+                const delay = Math.max(800, node.messages[i].length * 15);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                
+                typingEl.remove();
+                addBotMessage(node.messages[i]);
+                await new Promise(resolve => setTimeout(resolve, 300)); // small pause between messages
             }
 
-            // If node has options (Buttons)
             if (node.options) {
                 const optsDiv = document.createElement('div');
                 optsDiv.className = 'options-container';
@@ -985,9 +1105,13 @@
                 node.options.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = 'option-btn';
-                    btn.innerText = opt.text;
+                    
+                    // Add icon if exists
+                    const iconHtml = opt.icon ? `<i class="${opt.icon}"></i>` : '';
+                    btn.innerHTML = `${iconHtml} <span>${opt.text}</span>`;
+                    
                     btn.onclick = () => {
-                        optsDiv.style.display = 'none'; // Hide buttons after click
+                        optsDiv.style.display = 'none';
                         addUserMessage(opt.text);
                         if (opt.save) {
                             collectedData[opt.save.field] = opt.save.val;
@@ -1000,16 +1124,14 @@
                 chatBody.scrollTop = chatBody.scrollHeight;
             }
 
-            // If node requires text input
             if (node.inputType === "text") {
                 chatInputArea.classList.add('active');
                 chatInput.focus();
                 chatBody.scrollTop = chatBody.scrollHeight;
             }
 
-            // If node triggers final action (WhatsApp)
             if (node.action === "send_whatsapp") {
-                sendToWhatsApp();
+                setTimeout(() => sendToWhatsApp(), 1500);
             }
         }
 
@@ -1035,38 +1157,42 @@
             }
         }
 
-        function addBotMessageWithDelay(text, delay) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    const msgDiv = document.createElement('div');
-                    msgDiv.className = 'message bot-message';
-                    msgDiv.innerHTML = text; // allow HTML for links
-                    chatBody.appendChild(msgDiv);
-                    chatBody.scrollTop = chatBody.scrollHeight;
-                    resolve();
-                }, delay);
-            });
+        function addBotMessage(text) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'message-row bot-row';
+            
+            rowDiv.innerHTML = `
+                <div class="bot-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot" style="padding: 2px;">
+                </div>
+                <div class="message bot-message">${text}</div>
+            `;
+            
+            chatBody.appendChild(rowDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
 
         function addUserMessage(text) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'message user-message';
-            msgDiv.innerText = text;
-            chatBody.appendChild(msgDiv);
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'message-row user-row';
+            
+            rowDiv.innerHTML = `
+                <div class="message user-message">${text}</div>
+            `;
+            
+            chatBody.appendChild(rowDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
         function sendToWhatsApp() {
-            // Format collected data
             let msgText = "🚨 *New Lead Request from CATE Chatbot* 🚨\n\n";
             for (const [key, value] of Object.entries(collectedData)) {
                 msgText += `*${key}:* ${value}\n`;
             }
             
             const encodedMsg = encodeURIComponent(msgText);
-            const whatsappNumber = "201100783007"; // Format with country code
+            const whatsappNumber = "201100783007"; 
             
-            // Open WhatsApp link
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMsg}`, '_blank');
         }
     </script>
