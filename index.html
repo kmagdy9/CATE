@@ -969,13 +969,54 @@
                 ],
                 options: [
                     { icon: "fa-solid fa-compress", text: "Quote for Air Compressor", next: "pressure", save: {field: "Request", val: "Air Compressor Quote"} },
-                    { icon: "fa-solid fa-gears", text: "Quote for Parts", next: "contact_name", save: {field: "Request", val: "Parts Quote"} },
-                    { icon: "fa-solid fa-screwdriver-wrench", text: "Quote for Service", next: "contact_name", save: {field: "Request", val: "Service Quote"} },
+                    { icon: "fa-solid fa-gears", text: "Quote for Parts", next: "parts_brand_selection", save: {field: "Request", val: "Parts Quote"} },
+                    { icon: "fa-solid fa-screwdriver-wrench", text: "Quote for Service", next: "service_type", save: {field: "Request", val: "Service Quote"} },
                     { icon: "fa-solid fa-book", text: "Need a Manual", next: "contact_name", save: {field: "Request", val: "Manual Needed"} },
                     { icon: "fa-solid fa-headset", text: "Technical Support", next: "contact_name", save: {field: "Request", val: "Technical Support"} },
                     { icon: "fa-solid fa-bolt", text: "Quote for Gas Generator", next: "contact_name", save: {field: "Request", val: "Gas Generator Quote"} }
                 ]
             },
+            
+            /* --- مسار اختيار نوع الخدمة --- */
+            service_type: {
+                messages: ["What kind of equipment service would you like a quote for?? 🛠️"],
+                options: [
+                    { icon: "fa-solid fa-magnifying-glass", text: "Inspection", next: "service_machine_brand", save: {field: "Service_Type", val: "Inspection"} },
+                    { icon: "fa-solid fa-triangle-exclamation", text: "Breakdown", next: "service_machine_brand", save: {field: "Service_Type", val: "Breakdown"} },
+                    { icon: "fa-solid fa-money-check-dollar", text: "Fixed price service", next: "service_machine_brand", save: {field: "Service_Type", val: "Fixed price service"} },
+                    { icon: "fa-solid fa-clipboard-list", text: "Service plan", next: "service_machine_brand", save: {field: "Service_Type", val: "Service plan"} }
+                ]
+            },
+            service_machine_brand: {
+                messages: ["What is your machine's brand and model, please? (e.g. Atlas Copco GA30 VSD) 📝"],
+                inputType: "text",
+                next: "service_serial_number",
+                saveField: "Machine_Brand_Model"
+            },
+            service_serial_number: {
+                messages: ["What is the serial number? 🔢"],
+                inputType: "text",
+                next: "contact_name",
+                saveField: "Serial_Number"
+            },
+            /* --------------------------------------- */
+
+            /* --- مسار اختيار الماركة لقطع الغيار --- */
+            parts_brand_selection: {
+                messages: ["Do you want these parts for Atlas Copco compressor or another brand? ⚙️"],
+                options: [
+                    { icon: "fa-solid fa-compress", text: "Atlas Copco Compressor", next: "atlas_parts_info", save: {field: "Compressor_Brand", val: "Atlas Copco"} },
+                    { icon: "fa-solid fa-industry", text: "Another brand", next: "contact_name", save: {field: "Compressor_Brand", val: "Another Brand"} }
+                ]
+            },
+            atlas_parts_info: {
+                messages: ["Do you know the Part Number for the items needed? If not, please let us know the machine's brand and model (e.g. Atlas Copco GA30 VSD) 📝"],
+                inputType: "text",
+                next: "contact_name",
+                saveField: "Parts_Needed"
+            },
+            /* --------------------------------------- */
+
             pressure: {
                 messages: ["What is your operating pressure? ⚡ (preferably in bar)"],
                 options: [
@@ -989,8 +1030,22 @@
                 options: [
                     { icon: "fa-solid fa-arrow-up-right-dots", text: "> 250l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "> 250l/s"} },
                     { icon: "fa-solid fa-arrow-down-short-wide", text: "< 250 l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "< 250l/s"} },
-                    { icon: "fa-solid fa-plug", text: "Use kW instead", next: "contact_name", save: {field: "Flow", val: "Use kW"} }
+                    { icon: "fa-solid fa-plug", text: "Use kW instead", next: "ask_kw_power", save: {field: "Flow", val: "Use kW"} }
                 ]
+            },
+            ask_kw_power: {
+                messages: ["What is your required KW power? ⚡"],
+                options: [
+                    { icon: "fa-solid fa-battery-half", text: "less than or equal to 90 kW", next: "contact_name", save: {field: "KW_Power", val: "<= 90 kW"} },
+                    { icon: "fa-solid fa-battery-full", text: "more than 90 kW", next: "contact_name", save: {field: "KW_Power", val: "> 90 kW"} },
+                    { icon: "fa-solid fa-keyboard", text: "specify the needed kw if you know", next: "specify_kw_input", save: {field: "KW_Power", val: "Custom"} }
+                ]
+            },
+            specify_kw_input: {
+                messages: ["Specify your needed KW ⌨️"],
+                inputType: "text",
+                next: "contact_name",
+                saveField: "Specific_KW"
             },
             contact_name: {
                 messages: ["Great! 👍 I just need a few contact details from you before I can pass this over to our team. Could I have your first and last name please?"],
