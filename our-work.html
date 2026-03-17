@@ -205,9 +205,27 @@
         .work-card.admin:hover { border-color: var(--btn-admin); }
         .work-card.workshop:hover { border-color: var(--btn-workshop); }
         
-        .work-img-wrapper { position: relative; overflow: hidden; height: 280px; }
-        .work-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease-in-out; }
-        .work-card:hover .work-img { transform: scale(1.08); }
+        .work-img-wrapper { position: relative; 
+            overflow: hidden; 
+            height: 280px; 
+            /* إضافة خاصية لمنع تسريب الحواف أثناء الـ hover */
+            border-radius: inherit; 
+            -webkit-mask-image: -webkit-radial-gradient(white, black); }
+        .work-img { width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center;
+            /* الخصائص دي بتجبر المتصفح يحافظ على الـ High Resolution */
+            image-rendering: high-quality;
+            image-rendering: -webkit-optimize-contrast; 
+            /* تشغيل الـ Hardware Acceleration لمنع البكسلة والـ Blur */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0) scale(1.001); 
+            transition: transform 0.5s ease-in-out; 
+            will-change: transform; }
+        .work-card:hover .work-img { /* عدلنا الـ hover عشان يتوافق مع الـ Hardware Acceleration */
+            transform: translateZ(0) scale(1.08); }
         
         .work-tag { position: absolute; top: 20px; left: 20px; padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 2; }
         .tag-admin { background: var(--btn-admin); }
@@ -395,7 +413,7 @@
             
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="Strategic Meeting" class="work-img">
+                    <img src="Administration&Sales/Pic-1.webp" alt="Strategic Meeting" class="work-img">
                     <span class="work-tag tag-admin">Sales Strategy</span>
                 </div>
                 <div class="work-caption">
@@ -405,7 +423,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=800&auto=format&fit=crop" alt="Customer Support" class="work-img">
+                    <img src="Administration&Sales/Pic-2.webp" alt="Customer Support" class="work-img">
                     <span class="work-tag tag-admin">Client Support</span>
                 </div>
                 <div class="work-caption">
@@ -415,7 +433,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop" alt="Project Planning" class="work-img">
+                    <img src="Administration&Sales/Pic-3.webp" alt="Project Planning" class="work-img">
                     <span class="work-tag tag-admin">Project Planning</span>
                 </div>
                 <div class="work-caption">
@@ -425,7 +443,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop" alt="Business Analytics" class="work-img">
+                    <img src="Administration&Sales/Pic-4.webp" alt="Business Analytics" class="work-img">
                     <span class="work-tag tag-admin">Business Analytics</span>
                 </div>
                 <div class="work-caption">
@@ -435,7 +453,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop" alt="Team Collaboration" class="work-img">
+                    <img src="Administration&Sales/Pic-5.webp" alt="Team Collaboration" class="work-img">
                     <span class="work-tag tag-admin">Team Collaboration</span>
                 </div>
                 <div class="work-caption">
@@ -445,7 +463,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop" alt="Financial Planning" class="work-img">
+                    <img src="Administration&Sales/Pic-6.webp" alt="Financial Planning" class="work-img">
                     <span class="work-tag tag-admin">Financial Planning</span>
                 </div>
                 <div class="work-caption">
@@ -455,7 +473,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?q=80&w=800&auto=format&fit=crop" alt="Contract Negotiation" class="work-img">
+                    <img src="Administration&Sales/Pic-7.webp" alt="Contract Negotiation" class="work-img">
                     <span class="work-tag tag-admin">Contracts</span>
                 </div>
                 <div class="work-caption">
@@ -465,7 +483,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" alt="Training" class="work-img">
+                    <img src="Administration&Sales/Pic-8.webp" alt="Training" class="work-img">
                     <span class="work-tag tag-admin">Staff Training</span>
                 </div>
                 <div class="work-caption">
@@ -475,7 +493,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop" alt="Global Logistics" class="work-img">
+                    <img src="Administration&Sales/Pic-9.webp" alt="Global Logistics" class="work-img">
                     <span class="work-tag tag-admin">Logistics</span>
                 </div>
                 <div class="work-caption">
@@ -485,7 +503,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop" alt="Quality Assurance" class="work-img">
+                    <img src="Administration&Sales/Pic-10.webp" alt="Quality Assurance" class="work-img">
                     <span class="work-tag tag-admin">Quality Assurance</span>
                 </div>
                 <div class="work-caption">
@@ -495,7 +513,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" alt="Executive Board" class="work-img">
+                    <img src="Administration&Sales/Pic-11.webp" alt="Executive Board" class="work-img">
                     <span class="work-tag tag-admin">Management</span>
                 </div>
                 <div class="work-caption">
@@ -505,7 +523,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=800&auto=format&fit=crop" alt="Marketing Strategy" class="work-img">
+                    <img src="Administration&Sales/Pic-12.webp" alt="Marketing Strategy" class="work-img">
                     <span class="work-tag tag-admin">Marketing</span>
                 </div>
                 <div class="work-caption">
@@ -515,7 +533,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1664575602276-acd073f104c1?q=80&w=800&auto=format&fit=crop" alt="B2B Relations" class="work-img">
+                    <img src="Administration&Sales/Pic-13.webp" alt="B2B Relations" class="work-img">
                     <span class="work-tag tag-admin">B2B Relations</span>
                 </div>
                 <div class="work-caption">
@@ -525,7 +543,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=800&auto=format&fit=crop" alt="Supply Chain" class="work-img">
+                    <img src="Administration&Sales/Pic-14.webp" alt="Supply Chain" class="work-img">
                     <span class="work-tag tag-admin">Supply Chain</span>
                 </div>
                 <div class="work-caption">
@@ -535,7 +553,7 @@
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="IT Infrastructure" class="work-img">
+                    <img src="Administration&Sales/Pic-15.webp" alt="IT Infrastructure" class="work-img">
                     <span class="work-tag tag-admin">IT Infrastructure</span>
                 </div>
                 <div class="work-caption">
@@ -546,7 +564,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800&auto=format&fit=crop" alt="Workshop Repair" class="work-img">
+                    <img src="Work-shop/Pic1.webp" alt="Workshop Repair" class="work-img">
                     <span class="work-tag tag-workshop">Overhaul Service</span>
                 </div>
                 <div class="work-caption">
@@ -556,7 +574,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop" alt="On-Site Diagnostic" class="work-img">
+                    <img src="Work-shop/Pic-2.webp" alt="On-Site Diagnostic" class="work-img">
                     <span class="work-tag tag-workshop">On-Site Diagnostics</span>
                 </div>
                 <div class="work-caption">
@@ -566,7 +584,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1531973576160-7125cd663d86?q=80&w=800&auto=format&fit=crop" alt="Piping Installation" class="work-img">
+                    <img src="Work-shop/Pic-3.webp" alt="Piping Installation" class="work-img">
                     <span class="work-tag tag-workshop">AIRnet Installation</span>
                 </div>
                 <div class="work-caption">
@@ -576,7 +594,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop" alt="Routine Maintenance" class="work-img">
+                    <img src="Work-shop/Pic-4.webp" alt="Routine Maintenance" class="work-img">
                     <span class="work-tag tag-workshop">Maintenance</span>
                 </div>
                 <div class="work-caption">
@@ -586,7 +604,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop" alt="Safety Inspection" class="work-img">
+                    <img src="Work-shop/Pic-5.webp" alt="Safety Inspection" class="work-img">
                     <span class="work-tag tag-workshop">Safety Inspection</span>
                 </div>
                 <div class="work-caption">
@@ -596,7 +614,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1580983546538-23c2a6881c16?q=80&w=800&auto=format&fit=crop" alt="Parts Replacement" class="work-img">
+                    <img src="Work-shop/Pic-6.webp" alt="Parts Replacement" class="work-img">
                     <span class="work-tag tag-workshop">Part Replacement</span>
                 </div>
                 <div class="work-caption">
@@ -606,7 +624,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1611077544795-c9b20b22e118?q=80&w=800&auto=format&fit=crop" alt="System Calibration" class="work-img">
+                    <img src="Work-shop/Pic-7.webp" alt="System Calibration" class="work-img">
                     <span class="work-tag tag-workshop">Calibration</span>
                 </div>
                 <div class="work-caption">
@@ -616,7 +634,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop" alt="Energy Audit" class="work-img">
+                    <img src="Work-shop/Pic-8.webp" alt="Energy Audit" class="work-img">
                     <span class="work-tag tag-workshop">Energy Audit</span>
                 </div>
                 <div class="work-caption">
@@ -626,7 +644,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1620023640037-ce22b1c85d88?q=80&w=800&auto=format&fit=crop" alt="Leak Detection" class="work-img">
+                    <img src="Work-shop/Pic-9.webp" alt="Leak Detection" class="work-img">
                     <span class="work-tag tag-workshop">Leak Detection</span>
                 </div>
                 <div class="work-caption">
@@ -636,7 +654,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1508873535684-277a3ceb9821?q=80&w=800&auto=format&fit=crop" alt="Electrical Diagnostics" class="work-img">
+                    <img src="Work-shop/Pic-10.webp" alt="Electrical Diagnostics" class="work-img">
                     <span class="work-tag tag-workshop">Electrical</span>
                 </div>
                 <div class="work-caption">
@@ -646,7 +664,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop" alt="Component Welding" class="work-img">
+                    <img src="Work-shop/Pic-11.webp" alt="Component Welding" class="work-img">
                     <span class="work-tag tag-workshop">Fabrication</span>
                 </div>
                 <div class="work-caption">
@@ -656,7 +674,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?q=80&w=800&auto=format&fit=crop" alt="Precision Measurement" class="work-img">
+                    <img src="Work-shop/Pic-12.webp" alt="Precision Measurement" class="work-img">
                     <span class="work-tag tag-workshop">Precision Check</span>
                 </div>
                 <div class="work-caption">
@@ -666,7 +684,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" alt="Heavy Lifting" class="work-img">
+                    <img src="Work-shop/Pic-13.webp" alt="Heavy Lifting" class="work-img">
                     <span class="work-tag tag-workshop">Installation</span>
                 </div>
                 <div class="work-caption">
@@ -676,7 +694,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1635405074683-96d6921a2a68?q=80&w=800&auto=format&fit=crop" alt="Emergency Repair" class="work-img">
+                    <img src="Work-shop/Pic-14.webp" alt="Emergency Repair" class="work-img">
                     <span class="work-tag tag-workshop">24/7 Response</span>
                 </div>
                 <div class="work-caption">
@@ -686,7 +704,7 @@
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1574689211272-bc14e289e223?q=80&w=800&auto=format&fit=crop" alt="Quality Testing" class="work-img">
+                    <img src="Work-shop/Pic-15.webp" alt="Quality Testing" class="work-img">
                     <span class="work-tag tag-workshop">Fluid Analysis</span>
                 </div>
                 <div class="work-caption">

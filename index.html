@@ -338,11 +338,11 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
-        /* 1. زرار الشات (فوق الواتساب بمسافة متناسقة مع الأنيميشن) */
+        /* 1. زرار الشات */
         .chat-toggle-btn {
             position: fixed;
-            bottom: 105px; /* مسافة 15 بيكسل فوق الواتساب */
-            right: 30px; /* نفس محاذاة الواتساب بالظبط */
+            bottom: 105px; 
+            right: 30px; 
             width: 60px;
             height: 60px;
             background: #006F8F;
@@ -378,7 +378,6 @@
             transform: rotate(90deg);
         }
 
-        /* 2. Keyframes للنبض الأزرق */
         @keyframes pulse-blue {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 111, 143, 0.7); }
             70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(0, 111, 143, 0); }
@@ -388,10 +387,10 @@
         /* 3. نافذة الشات */
         .chat-window {
             position: fixed;
-            bottom: 180px; /* تفتح فوق زرار الشات */
-            right: 30px; /* نفس المحاذاة */
-            width: 350px;
-            height: 500px;
+            bottom: 180px; 
+            right: 30px; 
+            width: 380px;
+            height: 550px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.15);
@@ -399,10 +398,10 @@
             flex-direction: column;
             overflow: hidden;
             z-index: 9999;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter', 'Cairo', sans-serif;
             border: 1px solid #e2e8f0;
             opacity: 0;
-            transform-origin: bottom right; /* الأنيميشن يكبر من تحت ناحية اليمين */
+            transform-origin: bottom right; 
             transform: scale(0);
             transition: all 0.3s ease;
         }
@@ -444,14 +443,14 @@
             background: #f8fafc;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             scrollbar-width: thin;
         }
 
         /* الرسايل */
         .message {
             max-width: 85%;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: 15px;
             font-size: 14px;
             line-height: 1.5;
@@ -466,6 +465,13 @@
             border-bottom-left-radius: 2px;
         }
 
+        .bot-message a {
+            color: #006F8F;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
         .user-message {
             background: #006F8F;
             color: white;
@@ -476,8 +482,8 @@
         /* الاختيارات */
         .options-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
+            flex-direction: column;
+            gap: 8px;
             margin-top: 5px;
         }
 
@@ -485,12 +491,13 @@
             background: white;
             border: 1px solid #006F8F;
             color: #006F8F;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 12px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
             cursor: pointer;
             transition: 0.2s;
             font-weight: 600;
+            text-align: left;
         }
 
         .option-btn:hover {
@@ -498,117 +505,102 @@
             color: white;
         }
 
-        .whatsapp-link-btn {
-            display: inline-flex;
+        /* مكان كتابة النصوص المضاف جديد */
+        .chat-input-area {
+            display: none;
+            padding: 10px 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
             align-items: center;
-            gap: 8px;
-            background: #25D366;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 5px;
-            font-size: 13px;
+            gap: 10px;
         }
 
-        /* Animations */
+        .chat-input-area.active {
+            display: flex;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #006F8F;
+            box-shadow: 0 0 0 2px rgba(0, 111, 143, 0.1);
+        }
+
+        .chat-input-area button {
+            background: #006F8F;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .chat-input-area button:hover {
+            background: #005a75;
+            transform: scale(1.05);
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Mobile adjustments for layout */
+        /* Mobile adjustments */
         @media (max-width: 991px) {
             .main-nav { display: none; }
             .menu-btn { display: block; }
             .header-right { gap: 15px; }
-            
-            .featured-section, .section-reverse { 
-                flex-direction: column-reverse; 
-                padding: 40px 25px; 
-                text-align: center; 
-                gap: 30px; 
-                margin-top: 50px;
-            }
+            .featured-section, .section-reverse { flex-direction: column-reverse; padding: 40px 25px; text-align: center; gap: 30px; margin-top: 50px; }
             .featured-content h2::after { margin: 15px auto; }
             .btn-read-more { width: 100%; justify-content: center; }
-            
-            .watermark, .watermark-light { 
-                left: 50%; 
-                transform: translateX(-50%); 
-                top: 0; 
-                font-size: 8rem; 
-                opacity: 0.04;
-            }
-            
+            .watermark, .watermark-light { left: 50%; transform: translateX(-50%); top: 0; font-size: 8rem; opacity: 0.04; }
             .map-controls { flex-direction: column; align-items: center; padding: 15px; }
             .branch-group { width: 100%; max-width: 350px; }
             .branch-btn { flex: 1; justify-content: center; }
             #mapContainer { height: 400px; }
-            
-            .footer-grid { 
-                grid-template-columns: 1fr 1fr; 
-                text-align: center; 
-                gap: 20px; 
-            }
-
-            .footer-grid > .footer-col:first-child {
-                grid-column: 1 / -1; 
-                margin-bottom: 20px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-
+            .footer-grid { grid-template-columns: 1fr 1fr; text-align: center; gap: 20px; }
+            .footer-grid > .footer-col:first-child { grid-column: 1 / -1; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .footer-col h4 { font-size: 1.1rem; margin-bottom: 20px; }
             .footer-col h4::after { left: 50%; transform: translateX(-50%); }
-            
             .footer-link { justify-content: center; font-size: 0.9rem; white-space: nowrap; }
-            
             .social-links { justify-content: center; }
         }
 
         @media (max-width: 768px) {
             header, header.header-scrolled { height: 70px; padding: 0 15px; }
-            
             .logo-area { width: auto; height: 100%; }
             .cate-logo { height: 120px; top: -15px; }
             .atlas-logo { height: 30px !important; width: auto; margin-top: 5px; }
-            
             .container { margin: 30px auto; padding: 0 15px; }
-            
             .home-hero h2 { font-size: 2.5rem; }
             .home-hero p { font-size: 1.1rem; }
             .home-icon-float { font-size: 3rem; margin-top: 25px; }
-            
             .toggle-container { gap: 8px; border-radius: 20px; width: 100%; padding: 8px; margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; }
             .main-btn { padding: 10px 15px; font-size: 0.9rem; justify-content: center; width: 100%; border-radius: 12px; }
-            .main-btn .icon-colored { margin-right: 5px; font-size: 1.1rem; }
-            
             .section-header h2 { font-size: 2rem; }
-            .section-header p { font-size: 1rem; }
-            
             .featured-content h2 { font-size: 2rem; }
             .featured-section { padding: 30px 20px; }
-            
             .what-doing-grid { grid-template-columns: 1fr; gap: 40px; }
             .what-doing-section { margin-top: 60px; }
-            
             .g-cluster-1-big, .g-cluster-2-big { display: none; }
             .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
-            
             .callback-title { font-size: 2rem; }
             .callback-container { padding: 25px 20px; }
-            .btn-submit-modern { padding: 14px; font-size: 1rem; }
-            
-            /* تظبيط مقاسات وأماكن الزراير للموبايل عشان متبقاش ضخمة */
             .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
-            .chat-toggle-btn { width: 50px; height: 50px; bottom: 85px; right: 20px; } /* فرق 15 بيكسل برضو */
+            .chat-toggle-btn { width: 50px; height: 50px; bottom: 85px; right: 20px; }
             .chat-toggle-btn i { font-size: 22px; }
-            
-            .chat-window {
-                width: calc(100% - 40px); /* عرض الشاشة ناقص المسافات يمين وشمال */
-                max-height: 60vh;
-                bottom: 145px; /* يفتح فوق الزرار بتاع الموبايل */
-                right: 20px;
-            }
+            .chat-window { width: calc(100% - 40px); max-height: 60vh; bottom: 145px; right: 20px; }
         }
 
         @media (max-width: 400px) {
@@ -625,16 +617,9 @@
 <body>
 
     <div class="gears-container">
-        <svg class="gear-svg g-cluster-1-big" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
-        <svg class="gear-svg g-cluster-1-small" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
-
-        <svg class="gear-svg g-cluster-2-big" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
+        <svg class="gear-svg g-cluster-1-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-1-small" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-2-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
     </div>
     
     <header>
@@ -732,7 +717,7 @@
                 <button class="btn-read-more btn-read-more-white">Read More <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="featured-image">
-                <img src="https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Vacuum Solutions">
+                <img src="images/vacuum.webp" alt="Vacuum Solutions">
             </div>        </div>
 
         <div class="what-doing-section reveal">
@@ -785,10 +770,10 @@
                 <a href="tel:020021234567" class="footer-link"><i class="fa-solid fa-phone"></i> 02.002.123.4567</a>
             </div>
         </div>
-        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman Khedr</div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman Khedr & Khaled Magdy</div>
     </div>
 
-    <a href="https://wa.me/201023706078" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/201100783007" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
     
@@ -802,14 +787,19 @@
                 <i class="fa-solid fa-robot"></i> CATE Assistant
             </span>
             <div class="header-controls">
-                <span class="chat-reset" onclick="resetChat()" title="Start Over">
+                <span class="chat-reset" onclick="startChatBot()" title="Start Over">
                     <i class="fa-solid fa-rotate-right"></i>
                 </span>
                 <span class="chat-close" onclick="toggleChat()">×</span>
             </div>
         </div>
-        <div class="chat-body" id="chatBody">
-            </div>
+        
+        <div class="chat-body" id="chatBody"></div>
+        
+        <div class="chat-input-area" id="chatInputArea">
+            <input type="text" id="chatInput" placeholder="Type your answer here..." onkeypress="handleEnter(event)">
+            <button onclick="handleSendText()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -858,77 +848,97 @@
                 document.querySelectorAll('.branch-group').forEach(grp => grp.classList.remove('active-branch-group'));
                 document.getElementById(btnId).classList.add('active-branch-group');
             }
-
-            window.goToLocation = function(lat, lng, btnId) {
-                document.querySelector('.locations-section').scrollIntoView({behavior: 'smooth'});
-                setTimeout(() => {
-                    flyToLocation(lat, lng, btnId);
-                }, 500);
-            }
         }
 
+        /* -----------------------------------------------------------------
+           --- NEW CHATBOT LOGIC START --- 
+        ----------------------------------------------------------------- */
         const chatBody = document.getElementById('chatBody');
         const chatWindow = document.getElementById('cateChatWindow');
         const chatBtn = document.getElementById('mainChatBtn');
         const chatIcon = document.getElementById('chatIcon');
+        const chatInputArea = document.getElementById('chatInputArea');
+        const chatInput = document.getElementById('chatInput');
+        
         let hasStarted = false;
+        let collectedData = {};
+        let currentNode = '';
 
-        const botData = {
+        const chatFlow = {
             start: {
-                text: "أهلاً بيك في CATE! 👋\nممكن أساعدك إزاي النهاردة؟",
+                messages: [
+                    "Welcome in CATE Atlas Copco Egypt! 🇪🇬",
+                    "Hi I am your assistant for today - Is there something in particular that you are looking for today?"
+                ],
                 options: [
-                    { text: "شراء معدات (Sales) 🆕", next: "buy_new" },
-                    { text: "صيانة (Service) 🔧", next: "maintenance" },
-                    { text: "قطع غيار (Parts) ⚙️", next: "parts" },
-                    { text: "معلومات عنا ℹ️", next: "about" }
+                    { text: "Quote for air compressor", next: "pressure", save: {field: "Request", val: "Air Compressor Quote"} },
+                    { text: "Quote for parts", next: "contact_name", save: {field: "Request", val: "Parts Quote"} },
+                    { text: "Quote for service", next: "contact_name", save: {field: "Request", val: "Service Quote"} },
+                    { text: "Need a manual", next: "contact_name", save: {field: "Request", val: "Manual Needed"} },
+                    { text: "Technical support", next: "contact_name", save: {field: "Request", val: "Technical Support"} },
+                    { text: "Quote for gas generator", next: "contact_name", save: {field: "Request", val: "Gas Generator Quote"} }
                 ]
             },
-            buy_new: {
-                text: "اختيار ممتاز! بتدور على أي نوع؟",
+            pressure: {
+                messages: ["What is your operating pressure? (preferably in bar)"],
                 options: [
-                    { text: "Air Compressors", next: "compressors_info" },
-                    { text: "Vacuum Pumps", next: "contact_sales" },
-                    { text: "Generators", next: "contact_sales" },
-                    { text: "تحدث مع مبيعات 👨‍💼", next: "contact_human" }
+                    { text: "0-4 bar", next: "flow", save: {field: "Pressure", val: "0-4 bar"} },
+                    { text: "5-13 bar", next: "flow", save: {field: "Pressure", val: "5-13 bar"} },
+                    { text: "more than 13 bar", next: "flow", save: {field: "Pressure", val: "> 13 bar"} }
                 ]
             },
-            compressors_info: {
-                text: "عندنا Oil-free و Oil-injected من Atlas Copco. تحب تشوف الكتالوج؟",
+            flow: {
+                messages: ["How much flow do you think you'll need?"],
                 options: [
-                    { text: "فتح صفحة المنتجات", action: "link", url: "buy-new.html" },
-                    { text: "تواصل واتساب للسعر", next: "contact_human" }
+                    { text: "> 250l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "> 250l/s"} },
+                    { text: "< 250 l/s or 15 m3/min", next: "contact_name", save: {field: "Flow", val: "< 250l/s"} },
+                    { text: "Use kW instead", next: "contact_name", save: {field: "Flow", val: "Use kW"} }
                 ]
             },
-            maintenance: {
-                text: "جاهزين للصيانة. المشكلة نوعها إيه؟",
+            contact_name: {
+                messages: ["Great, I just need a few contact details from you before I can pass this over to our team. Could I have your first and last name please?"],
+                inputType: "text",
+                next: "company_name",
+                saveField: "Name"
+            },
+            company_name: {
+                messages: ["What is your company name, please?"],
+                inputType: "text",
+                next: "location_type",
+                saveField: "Company"
+            },
+            location_type: {
+                messages: ["What is your company location? We need to assign the right person for your location."],
                 options: [
-                    { text: "عطل واقف (Emergency) 🚨", next: "emergency" },
-                    { text: "صيانة دورية 📅", next: "contact_human" },
-                    { text: "عمرة (Overhaul)", next: "contact_human" }
+                    { text: "Inside Egypt", next: "city", save: {field: "Location", val: "Inside Egypt"} },
+                    { text: "Outside Egypt", next: "email", save: {field: "Location", val: "Outside Egypt"} }
                 ]
             },
-            parts: {
-                text: "عشان نجبلك القطعة الصح، ياريت تجهز السيريال نمبر.",
-                options: [
-                    { text: "جاهز، حولني واتساب", next: "contact_human" }
-                ]
+            city: {
+                messages: ["Which city, please?"],
+                inputType: "text",
+                next: "email",
+                saveField: "City"
             },
-            about: {
-                text: "إحنا CATE، وكيل معتمد لـ Atlas Copco في مصر.",
-                options: [
-                    { text: "سابقة الأعمال", action: "link", url: "our-work.html" },
-                    { text: "رجوع للقائمة", next: "start" }
-                ]
+            email: {
+                messages: ["Finally, what's your email?"],
+                inputType: "text",
+                next: "phone",
+                saveField: "Email"
             },
-            emergency: {
-                text: "للأعطال الطارئة، يفضل الاتصال فوراً!",
-                options: [
-                    { text: "تواصل مع المهندس", next: "contact_human" }
-                ]
+            phone: {
+                messages: ["To help you quicker, please leave your phone number"],
+                inputType: "text",
+                next: "end_chat",
+                saveField: "Phone"
             },
-            contact_human: {
-                text: "اضغط تحت عشان تتواصل مع المهندس المختص على واتساب 👇",
-                whatsapp: true
+            end_chat: {
+                messages: [
+                    "Thanks for sharing your details. Our team will get back to you shortly!",
+                    "Your chat has ended.",
+                    "<a onclick='startChatBot()' style='cursor:pointer;'>To start a new chat, click here.</a>"
+                ],
+                action: "send_whatsapp"
             }
         };
 
@@ -940,8 +950,7 @@
                 chatIcon.classList.remove('fa-comment-dots');
                 chatIcon.classList.add('fa-xmark');
                 if (!hasStarted) {
-                    addBotMessage(botData.start);
-                    hasStarted = true;
+                    startChatBot();
                 }
             } else {
                 chatIcon.classList.add('fa-comment-dots');
@@ -949,66 +958,116 @@
             }
         }
 
-        function resetChat() {
+        function startChatBot() {
             chatBody.innerHTML = '';
-            hasStarted = false;
-            const loading = document.createElement('div');
-            loading.className = 'message bot-message';
-            loading.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ...';
-            chatBody.appendChild(loading);
-            
-            setTimeout(() => {
-                loading.remove();
-                addBotMessage(botData.start);
-                hasStarted = true;
-            }, 500);
+            collectedData = {};
+            hasStarted = true;
+            chatInputArea.classList.remove('active');
+            chatInput.value = '';
+            renderNode('start');
         }
 
-        function addBotMessage(data) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'message bot-message';
-            msgDiv.innerText = data.text;
-            chatBody.appendChild(msgDiv);
-
-            if (data.whatsapp) {
-                const whatsappBtn = document.createElement('a');
-                whatsappBtn.className = 'whatsapp-link-btn';
-                whatsappBtn.href = "https://wa.me/201023706078"; 
-                whatsappBtn.target = "_blank";
-                whatsappBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp';
-                chatBody.appendChild(whatsappBtn);
+        async function renderNode(nodeId) {
+            currentNode = nodeId;
+            const node = chatFlow[nodeId];
+            chatInputArea.classList.remove('active'); // Hide input by default
+            
+            // Loop and display bot messages with a slight delay
+            for (let i = 0; i < node.messages.length; i++) {
+                await addBotMessageWithDelay(node.messages[i], 600);
             }
 
-            if (data.options) {
+            // If node has options (Buttons)
+            if (node.options) {
                 const optsDiv = document.createElement('div');
                 optsDiv.className = 'options-container';
                 
-                data.options.forEach(opt => {
+                node.options.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = 'option-btn';
                     btn.innerText = opt.text;
-                    
                     btn.onclick = () => {
-                        const userMsg = document.createElement('div');
-                        userMsg.className = 'message user-message';
-                        userMsg.innerText = opt.text;
-                        chatBody.appendChild(userMsg);
-                        optsDiv.remove();
-
-                        setTimeout(() => {
-                            if (opt.action === 'link') {
-                                window.location.href = opt.url;
-                            } else if (opt.next && botData[opt.next]) {
-                                addBotMessage(botData[opt.next]);
-                            }
-                            chatBody.scrollTop = chatBody.scrollHeight;
-                        }, 500);
+                        optsDiv.style.display = 'none'; // Hide buttons after click
+                        addUserMessage(opt.text);
+                        if (opt.save) {
+                            collectedData[opt.save.field] = opt.save.val;
+                        }
+                        setTimeout(() => renderNode(opt.next), 500);
                     };
                     optsDiv.appendChild(btn);
                 });
                 chatBody.appendChild(optsDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
             }
+
+            // If node requires text input
+            if (node.inputType === "text") {
+                chatInputArea.classList.add('active');
+                chatInput.focus();
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            // If node triggers final action (WhatsApp)
+            if (node.action === "send_whatsapp") {
+                sendToWhatsApp();
+            }
+        }
+
+        function handleSendText() {
+            const val = chatInput.value.trim();
+            if (val === '') return;
+            
+            chatInputArea.classList.remove('active');
+            chatInput.value = '';
+            addUserMessage(val);
+
+            const node = chatFlow[currentNode];
+            if (node.saveField) {
+                collectedData[node.saveField] = val;
+            }
+
+            setTimeout(() => renderNode(node.next), 500);
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                handleSendText();
+            }
+        }
+
+        function addBotMessageWithDelay(text, delay) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message bot-message';
+                    msgDiv.innerHTML = text; // allow HTML for links
+                    chatBody.appendChild(msgDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
+
+        function addUserMessage(text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message user-message';
+            msgDiv.innerText = text;
+            chatBody.appendChild(msgDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendToWhatsApp() {
+            // Format collected data
+            let msgText = "🚨 *New Lead Request from CATE Chatbot* 🚨\n\n";
+            for (const [key, value] of Object.entries(collectedData)) {
+                msgText += `*${key}:* ${value}\n`;
+            }
+            
+            const encodedMsg = encodeURIComponent(msgText);
+            const whatsappNumber = "201100783007"; // Format with country code
+            
+            // Open WhatsApp link
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMsg}`, '_blank');
         }
     </script>
 </body>
