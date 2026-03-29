@@ -190,16 +190,32 @@
 
         .gallery-section { padding: 0 5% 80px; max-width: 1400px; margin: 0 auto; flex: 1; }
         
-        /* --- EDITED GRID: FORCE 3 COLUMNS --- */
+        /* --- EDITED GRID: FLEXBOX FOR CENTERING LAST ROW --- */
         .gallery-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center; /* This perfectly centers rows with less than 3 cards */
             gap: 30px; 
         }
         
-        .work-card { background: var(--surface); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-soft); transition: 0.4s ease; border: 1px solid var(--border); opacity: 0; animation: fadeUp 0.8s ease forwards; display: block; }
-        .work-card.hide { display: none; } 
-        .work-card.show { animation: fadeIn 0.5s ease forwards; }
+        .work-card { 
+            width: calc(33.333% - 20px); 
+            background: var(--surface); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: var(--shadow-soft); 
+            transition: 0.4s ease; 
+            border: 1px solid var(--border); 
+            opacity: 0; 
+            animation: fadeUp 0.8s ease forwards; 
+            display: none; /* Hide by default */
+        }
+        
+        .work-card.show { 
+            display: block; /* Display only when filtered */
+            animation: fadeIn 0.5s ease forwards; 
+        }
+        
         .work-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-card); }
         
         .work-card.admin:hover { border-color: var(--btn-admin); }
@@ -208,23 +224,20 @@
         .work-img-wrapper { position: relative; 
             overflow: hidden; 
             height: 280px; 
-            /* إضافة خاصية لمنع تسريب الحواف أثناء الـ hover */
             border-radius: inherit; 
             -webkit-mask-image: -webkit-radial-gradient(white, black); }
         .work-img { width: 100%; 
             height: 100%; 
             object-fit: cover; 
             object-position: center;
-            /* الخصائص دي بتجبر المتصفح يحافظ على الـ High Resolution */
             image-rendering: high-quality;
             image-rendering: -webkit-optimize-contrast; 
-            /* تشغيل الـ Hardware Acceleration لمنع البكسلة والـ Blur */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             transform: translateZ(0) scale(1.001); 
             transition: transform 0.5s ease-in-out; 
             will-change: transform; }
-        .work-card:hover .work-img { /* عدلنا الـ hover عشان يتوافق مع الـ Hardware Acceleration */
+        .work-card:hover .work-img { 
             transform: translateZ(0) scale(1.08); }
         
         .work-tag { position: absolute; top: 20px; left: 20px; padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 2; }
@@ -233,7 +246,7 @@
         
         .work-caption { padding: 25px; background: var(--surface); border-top: 1px solid var(--border); position: relative; z-index: 2; }
         .work-caption p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 500; }
-        .work-caption i { margin-right: 8px; }
+        .work-caption i { margin-right: 8px; width: 20px; text-align: center; }
 
         /* --- Footer Styles --- */
         .footer-section { background-color: var(--dark-footer); color: #fff; padding: 70px 5% 40px; margin-top: auto; width: 100%; border-top: 5px solid var(--primary); position: relative; flex-shrink: 0; }
@@ -286,7 +299,7 @@
 
         /* --- MOBILE & RESPONSIVE TWEAKS --- */
         @media (max-width: 1100px) {
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .work-card { width: calc(50% - 15px); } /* 2 columns */
         }
 
         @media (max-width: 991px) {
@@ -326,7 +339,7 @@
             .g-cluster-1-big, .g-cluster-2-big { display: none; }
             .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
             
-            .gallery-grid { grid-template-columns: 1fr; }
+            .work-card { width: 100%; } /* 1 column */
             .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
         }
 
@@ -437,7 +450,7 @@
                     <span class="work-tag tag-admin">Project Planning</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-map" style="color:var(--btn-admin);"></i> Mapping out large-scale installation projects and timelines.</p>
+                    <p><i class="fa-solid fa-diagram-project" style="color:var(--btn-admin);"></i> Mapping out large-scale installation projects and timelines.</p>
                 </div>
             </div>
 
@@ -457,37 +470,37 @@
                     <span class="work-tag tag-admin">Team Collaboration</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-users" style="color:var(--btn-admin);"></i> Inter-departmental meetings ensuring seamless workflow execution.</p>
+                    <p><i class="fa-solid fa-people-group" style="color:var(--btn-admin);"></i> Inter-departmental meetings ensuring seamless workflow execution.</p>
                 </div>
             </div>
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Administration&Sales/Pic-6.webp" alt="Financial Planning" class="work-img">
+                    <img src="Administration&Sales/Pic-6.webp" alt="Expert Consultation & Planning" class="work-img">
+                    <span class="work-tag tag-admin">Expert Consultation & Planning</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-handshake-angle" style="color:var(--btn-admin);"></i>Our dedicated professionals carefully analyze your industrial requirements to provide tailored, cost-effective compressed air solutions.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="Administration&Sales/Pic-7.webp" alt="Installation" class="work-img">
+                    <span class="work-tag tag-admin">Installation</span>
+                </div>
+                <div class="work-caption">
+                    <p><i class="fa-solid fa-screwdriver-wrench" style="color:var(--btn-admin);"></i> Mapping out precise installation plans to ensure full compliance with Atlas Copco standards.</p>
+                </div>
+            </div>
+
+            <div class="work-card admin" data-tilt>
+                <div class="work-img-wrapper">
+                    <img src="Administration&Sales/Pic-8.webp" alt="Financial Planning" class="work-img">
                     <span class="work-tag tag-admin">Financial Planning</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-coins" style="color:var(--btn-admin);"></i> Structuring budget-friendly proposals for long-term investments.</p>
-                </div>
-            </div>
-
-            <div class="work-card admin" data-tilt>
-                <div class="work-img-wrapper">
-                    <img src="Administration&Sales/Pic-7.webp" alt="Contract Negotiation" class="work-img">
-                    <span class="work-tag tag-admin">Contracts</span>
-                </div>
-                <div class="work-caption">
-                    <p><i class="fa-solid fa-handshake" style="color:var(--btn-admin);"></i> Securing mutually beneficial agreements with top industrial factories.</p>
-                </div>
-            </div>
-
-            <div class="work-card admin" data-tilt>
-                <div class="work-img-wrapper">
-                    <img src="Administration&Sales/Pic-8.webp" alt="Training" class="work-img">
-                    <span class="work-tag tag-admin">Staff Training</span>
-                </div>
-                <div class="work-caption">
-                    <p><i class="fa-solid fa-chalkboard-user" style="color:var(--btn-admin);"></i> Continuous learning programs to keep our sales team at the forefront.</p>
+                    <p><i class="fa-solid fa-calculator" style="color:var(--btn-admin);"></i> Structuring budget-friendly proposals for long-term investments.</p>
                 </div>
             </div>
 
@@ -497,7 +510,7 @@
                     <span class="work-tag tag-admin">Logistics</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-globe" style="color:var(--btn-admin);"></i> Coordinating the import and distribution of genuine Atlas Copco parts.</p>
+                    <p><i class="fa-solid fa-truck-fast" style="color:var(--btn-admin);"></i> Coordinating the import and distribution of genuine Atlas Copco parts.</p>
                 </div>
             </div>
 
@@ -507,7 +520,7 @@
                     <span class="work-tag tag-admin">Quality Assurance</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-check-circle" style="color:var(--btn-admin);"></i> Auditing operational processes to guarantee premium client service.</p>
+                    <p><i class="fa-solid fa-clipboard-check" style="color:var(--btn-admin);"></i> Auditing operational processes to guarantee premium client service.</p>
                 </div>
             </div>
 
@@ -527,7 +540,7 @@
                     <span class="work-tag tag-admin">Marketing</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-bullseye" style="color:var(--btn-admin);"></i> Launching targeted campaigns to reach new sectors and industries.</p>
+                    <p><i class="fa-solid fa-bullhorn" style="color:var(--btn-admin);"></i> Launching targeted campaigns to reach new sectors and industries.</p>
                 </div>
             </div>
 
@@ -537,27 +550,17 @@
                     <span class="work-tag tag-admin">B2B Relations</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-building" style="color:var(--btn-admin);"></i> Fostering strong, long-lasting partnerships with corporate entities.</p>
+                    <p><i class="fa-solid fa-handshake" style="color:var(--btn-admin);"></i> Fostering strong, long-lasting partnerships with corporate entities.</p>
                 </div>
             </div>
 
             <div class="work-card admin" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Administration&Sales/Pic-14.webp" alt="Supply Chain" class="work-img">
-                    <span class="work-tag tag-admin">Supply Chain</span>
+                    <img src="Administration&Sales/Pic-15.webp" alt="Contracts" class="work-img">
+                    <span class="work-tag tag-admin">Contracts</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-truck" style="color:var(--btn-admin);"></i> Managing inventory efficiently to ensure rapid parts availability.</p>
-                </div>
-            </div>
-
-            <div class="work-card admin" data-tilt>
-                <div class="work-img-wrapper">
-                    <img src="Administration&Sales/Pic-15.webp" alt="IT Infrastructure" class="work-img">
-                    <span class="work-tag tag-admin">IT Infrastructure</span>
-                </div>
-                <div class="work-caption">
-                    <p><i class="fa-solid fa-desktop" style="color:var(--btn-admin);"></i> Developing digital solutions and systems to streamline our operations.</p>
+                    <p><i class="fa-solid fa-file-contract" style="color:var(--btn-admin);"></i> Securing mutually beneficial agreements with top industrial factories.</p>
                 </div>
             </div>
 
@@ -565,30 +568,30 @@
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
                     <img src="Work-shop/Pic1.webp" alt="Workshop Repair" class="work-img">
-                    <span class="work-tag tag-workshop">Overhaul Service</span>
+                    <span class="work-tag tag-workshop">Electricity Team</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-wrench" style="color:var(--btn-workshop);"></i> Certified technicians performing a complete air-end overhaul in our workshop.</p>
+                    <p><i class="fa-solid fa-bolt" style="color:var(--btn-workshop);"></i> Specialized electrical team ensuring safe and efficient operations for all equipment.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
                     <img src="Work-shop/Pic-2.webp" alt="On-Site Diagnostic" class="work-img">
-                    <span class="work-tag tag-workshop">On-Site Diagnostics</span>
+                    <span class="work-tag tag-workshop">Mechanics Team</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-laptop-medical" style="color:var(--btn-workshop);"></i> Running advanced diagnostic tests at a client's facility to ensure peak performance.</p>
+                    <p><i class="fa-solid fa-gears" style="color:var(--btn-workshop);"></i> Our skilled mechanical team handling complex repairs and heavy machinery maintenance.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
                     <img src="Work-shop/Pic-3.webp" alt="Piping Installation" class="work-img">
-                    <span class="work-tag tag-workshop">AIRnet Installation</span>
+                    <span class="work-tag tag-workshop">Genuine Spare Parts</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-network-wired" style="color:var(--btn-workshop);"></i> Installing efficient aluminum piping systems for clean air delivery.</p>
+                    <p><i class="fa-solid fa-box-open" style="color:var(--btn-workshop);"></i> Supplying 100% genuine and guaranteed Atlas Copco spare parts for maximum reliability.</p>
                 </div>
             </div>
 
@@ -598,13 +601,13 @@
                     <span class="work-tag tag-workshop">Maintenance</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-clipboard-list" style="color:var(--btn-workshop);"></i> Executing 4000-hour and 8000-hour preventive maintenance routines.</p>
+                    <p><i class="fa-solid fa-clock-rotate-left" style="color:var(--btn-workshop);"></i> Executing 4000-hour and 8000-hour preventive maintenance routines.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-5.webp" alt="Safety Inspection" class="work-img">
+                    <img src="Work-shop/Pic-9.webp" alt="Safety Inspection" class="work-img">
                     <span class="work-tag tag-workshop">Safety Inspection</span>
                 </div>
                 <div class="work-caption">
@@ -618,100 +621,81 @@
                     <span class="work-tag tag-workshop">Part Replacement</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-cogs" style="color:var(--btn-workshop);"></i> Exchanging worn out components with 100% genuine replacement parts.</p>
+                    <p><i class="fa-solid fa-toolbox" style="color:var(--btn-workshop);"></i> Exchanging worn out components with 100% genuine replacement parts.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
                     <img src="Work-shop/Pic-7.webp" alt="System Calibration" class="work-img">
-                    <span class="work-tag tag-workshop">Calibration</span>
+                    <span class="work-tag tag-workshop">Leak Inspection</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-scale-balanced" style="color:var(--btn-workshop);"></i> Fine-tuning pressure settings and sensor readings for maximum efficiency.</p>
+                    <p><i class="fa-solid fa-magnifying-glass-chart" style="color:var(--btn-workshop);"></i> Detecting and repairing compressed air leaks to prevent energy loss and maintain pressure.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-8.webp" alt="Energy Audit" class="work-img">
-                    <span class="work-tag tag-workshop">Energy Audit</span>
+                    <img src="Work-shop/Pic-8.webp" alt="Equipment Refurbishment" class="work-img">
+                    <span class="work-tag tag-workshop">Equipment Refurbishment</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-bolt" style="color:var(--btn-workshop);"></i> Monitoring power consumption to help clients reduce their energy bills.</p>
+                    <p><i class="fa-solid fa-spray-can-sparkles" style="color:var(--btn-workshop);"></i> Restoring your compressors to optimal condition with professional deep cleaning.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-9.webp" alt="Leak Detection" class="work-img">
-                    <span class="work-tag tag-workshop">Leak Detection</span>
-                </div>
-                <div class="work-caption">
-                    <p><i class="fa-solid fa-droplet-slash" style="color:var(--btn-workshop);"></i> Utilizing ultrasonic tools to pinpoint and eliminate compressed air leaks.</p>
-                </div>
-            </div>
-
-            <div class="work-card workshop" data-tilt>
-                <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-10.webp" alt="Electrical Diagnostics" class="work-img">
+                    <img src="Work-shop/Pic-16.webp" alt="Electrical Diagnostics" class="work-img">
                     <span class="work-tag tag-workshop">Electrical</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-plug" style="color:var(--btn-workshop);"></i> Troubleshooting and repairing complex control panel and inverter faults.</p>
+                    <p><i class="fa-solid fa-microchip" style="color:var(--btn-workshop);"></i> Troubleshooting and repairing complex control panel and inverter faults.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
                     <img src="Work-shop/Pic-11.webp" alt="Component Welding" class="work-img">
-                    <span class="work-tag tag-workshop">Fabrication</span>
+                    <span class="work-tag tag-workshop">Certified Technicians</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-fire-burner" style="color:var(--btn-workshop);"></i> Custom welding and fabrication for specialized receiver tanks and mounts.</p>
+                    <p><i class="fa-solid fa-user-gear" style="color:var(--btn-workshop);"></i> Trust our highly trained CATE team for the meticulous handling, maintenance, and repair.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-12.webp" alt="Precision Measurement" class="work-img">
-                    <span class="work-tag tag-workshop">Precision Check</span>
+                    <img src="Work-shop/Pic-12.webp" alt="Ready for Deployment" class="work-img">
+                    <span class="work-tag tag-workshop">Ready for Deployment</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-ruler" style="color:var(--btn-workshop);"></i> Taking micro-measurements to ensure perfect alignment of rotating parts.</p>
+                    <p><i class="fa-solid fa-dolly" style="color:var(--btn-workshop);"></i> Finalizing the overhaul process with robust packaging, ensuring arrival ready for operation.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-13.webp" alt="Heavy Lifting" class="work-img">
-                    <span class="work-tag tag-workshop">Installation</span>
+                    <img src="Work-shop/Pic-13.webp" alt="Dryer Service" class="work-img">
+                    <span class="work-tag tag-workshop">Dryer Service</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-truck-ramp-box" style="color:var(--btn-workshop);"></i> Safe rigging and placement of heavy industrial compressors on site.</p>
+                    <p><i class="fa-solid fa-droplet-slash" style="color:var(--btn-workshop);"></i> Comprehensive maintenance for air dryers to guarantee continuous moisture-free air.</p>
                 </div>
             </div>
 
             <div class="work-card workshop" data-tilt>
                 <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-14.webp" alt="Emergency Repair" class="work-img">
+                    <img src="Work-shop/Pic-15.webp" alt="Emergency Repair" class="work-img">
                     <span class="work-tag tag-workshop">24/7 Response</span>
                 </div>
                 <div class="work-caption">
-                    <p><i class="fa-solid fa-truck-medical" style="color:var(--btn-workshop);"></i> Rapid deployment of our technical fleet to handle breakdown emergencies.</p>
+                    <p><i class="fa-solid fa-stopwatch" style="color:var(--btn-workshop);"></i> Rapid deployment of our technical fleet to handle breakdown emergencies.</p>
                 </div>
             </div>
 
-            <div class="work-card workshop" data-tilt>
-                <div class="work-img-wrapper">
-                    <img src="Work-shop/Pic-15.webp" alt="Quality Testing" class="work-img">
-                    <span class="work-tag tag-workshop">Fluid Analysis</span>
-                </div>
-                <div class="work-caption">
-                    <p><i class="fa-solid fa-vial" style="color:var(--btn-workshop);"></i> Taking oil samples for lab analysis to predict and prevent internal wear.</p>
-                </div>
-            </div>
-
+            
         </div>
     </section>
 
@@ -763,15 +747,12 @@
             // Add active to current btn
             if(btn) btn.classList.add("active");
 
-            // Filter items
+            // Filter items by adding/removing 'show' class (relies purely on CSS logic now)
             if (c == "all") c = "";
             for (i = 0; i < x.length; i++) {
                 RemoveClass(x[i], "show");
                 if (x[i].className.indexOf(c) > -1) {
                     AddClass(x[i], "show");
-                    x[i].style.display = "block";
-                } else {
-                    x[i].style.display = "none";
                 }
             }
         }

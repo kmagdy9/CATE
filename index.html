@@ -800,7 +800,7 @@
                 <button class="btn-read-more btn-read-more-std" onclick="window.location.href='rental-trade.html'">Read More <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="featured-image">
-                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80" alt="Rental Equipment">
+                <img src="images/24-7.webp" alt="Rental Equipment">
             </div>        </div>
 
         <div class="featured-section section-reverse featured-blue-bg reveal">
@@ -971,13 +971,49 @@
                     { icon: "fa-solid fa-compress", text: "Quote for Air Compressor", next: "pressure", save: {field: "Request", val: "Air Compressor Quote"} },
                     { icon: "fa-solid fa-gears", text: "Quote for Parts", next: "parts_brand_selection", save: {field: "Request", val: "Parts Quote"} },
                     { icon: "fa-solid fa-screwdriver-wrench", text: "Quote for Service", next: "service_type", save: {field: "Request", val: "Service Quote"} },
-                    { icon: "fa-solid fa-book", text: "Need a Manual", next: "contact_name", save: {field: "Request", val: "Manual Needed"} },
-                    { icon: "fa-solid fa-headset", text: "Technical Support", next: "contact_name", save: {field: "Request", val: "Technical Support"} },
-                    { icon: "fa-solid fa-bolt", text: "Quote for Gas Generator", next: "contact_name", save: {field: "Request", val: "Gas Generator Quote"} }
+                    { icon: "fa-solid fa-headset", text: "Technical Support", next: "tech_support_issue", save: {field: "Request", val: "Technical Support"} },
+                    { icon: "fa-solid fa-bolt", text: "Quote for Gas Generator", next: "gas_type_selection", save: {field: "Request", val: "Gas Generator Quote"} }
                 ]
             },
+
+            /* --- Gas Generator Flow --- */
+            gas_type_selection: {
+                messages: ["Please advise what kind of gas do you need for your application. 💨"],
+                options: [
+                    { icon: "fa-solid fa-wind", text: "Oxygen", next: "industrial_app", save: {field: "Gas_Type", val: "Oxygen"} },
+                    { icon: "fa-solid fa-cloud", text: "Nitrogen", next: "industrial_app", save: {field: "Gas_Type", val: "Nitrogen"} }
+                ]
+            },
+            industrial_app: {
+                messages: ["What is your Industrial application? 🏭"],
+                inputType: "text",
+                next: "discharge_flow",
+                saveField: "Industrial_Application"
+            },
+            discharge_flow: {
+                messages: ["What is the discharge flow requirement do you need? 📊"],
+                inputType: "text",
+                next: "purity_pressure",
+                saveField: "Discharge_Flow"
+            },
+            purity_pressure: {
+                messages: ["What purity do you require and at what discharge pressure? 🎯"],
+                inputType: "text",
+                next: "contact_name",
+                saveField: "Purity_And_Pressure"
+            },
+            /* --------------------------------------- */
             
-            /* --- مسار اختيار نوع الخدمة --- */
+            /* --- مسار الدعم الفني --- */
+            tech_support_issue: {
+                messages: ["What technical difficulties can we help with? 🛠️"],
+                inputType: "text",
+                next: "service_machine_brand",
+                saveField: "Technical_Issue"
+            },
+            /* --------------------------------------- */
+
+            /* --- مسار اختيار نوع الخدمة وموديل الماكينة (مُشترك مع الدعم الفني) --- */
             service_type: {
                 messages: ["What kind of equipment service would you like a quote for?? 🛠️"],
                 options: [
