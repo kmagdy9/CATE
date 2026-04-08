@@ -84,7 +84,6 @@
             height: 90px;
         }
 
-        /* --- Logo Settings --- */
         .logo-area { 
             position: relative;
             display: flex; 
@@ -147,7 +146,6 @@
         .mobile-menu.active { right: 0; }
         .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
         
-        /* UPDATED: Mobile Logo (Color & Bigger) */
         .mobile-logo { height: 60px; filter: none; opacity: 1; transition: 0.3s; }
         
         .close-menu { font-size: 1.5rem; color: var(--text-muted); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); }
@@ -232,20 +230,113 @@
         .form-header p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
         .full-width { grid-column: span 2; }
+        
+        /* --- Inputs & Custom Dropdowns --- */
         .form-group-float { position: relative; }
         .input-float {
-            width: 100%; padding: 15px 15px 15px 15px; background: var(--bg-body); border: 2px solid transparent;
+            width: 100%; padding: 15px; background: var(--bg-body); border: 2px solid transparent;
             border-radius: 12px; font-size: 1rem; color: var(--text-main); outline: none; transition: all 0.3s ease; font-family: inherit;
         }
         .input-float:focus { background: var(--surface-color); border-color: var(--primary); box-shadow: var(--shadow-glow); }
+        
         .label-float {
             position: absolute; left: 15px; top: 15px; color: var(--text-muted); font-size: 0.95rem; pointer-events: none;
-            transition: all 0.25s ease; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; font-weight: 600;
+            transition: all 0.25s ease; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
         }
-        .input-float:focus ~ .label-float, .input-float:not(:placeholder-shown) ~ .label-float { transform: translateY(-28px); left: 5px; color: var(--primary); font-size: 0.75rem; }
-        select.input-float { padding-top: 15px; cursor: pointer; color: var(--text-muted); }
-        select.input-float:focus, select.input-float:valid { color: var(--text-main); }
         
+        /* Floating label trigger for standard inputs */
+        .input-float:focus ~ .label-float, .input-float:not(:placeholder-shown) ~ .label-float { 
+            transform: translateY(-28px); left: 5px; color: var(--primary); font-size: 0.75rem; 
+        }
+
+        /* --- Custom Dropdown Styles --- */
+        .custom-select {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 52px;
+            user-select: none;
+            color: var(--text-main);
+        }
+        .custom-select-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .custom-select::after {
+            content: '\f078'; /* FontAwesome angle-down */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+        }
+        .custom-select.is-open {
+            background: var(--surface-color);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+        .custom-select.is-open::after {
+            transform: rotate(180deg);
+        }
+        
+        .custom-options {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-top: 8px;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            max-height: 220px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        .custom-options.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .custom-option {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--bg-body);
+        }
+        .custom-option:last-child { border-bottom: none; }
+        .custom-option:hover {
+            background: var(--accent-bg);
+            color: var(--primary);
+            padding-left: 20px;
+            font-weight: 600;
+        }
+        .custom-option.selected {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Custom Scrollbar for Options */
+        .custom-options::-webkit-scrollbar { width: 6px; }
+        .custom-options::-webkit-scrollbar-track { background: transparent; }
+        .custom-options::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .custom-options::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+
+        /* Float label trigger for custom dropdowns */
+        .form-group-float.has-value .label-float,
+        .form-group-float.is-active .label-float {
+            transform: translateY(-28px);
+            left: 5px;
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
         .radio-section { margin: 30px 0; }
         .radio-title { font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-bottom: 15px; display: block; text-transform: uppercase; }
         .radio-options { display: flex; gap: 20px; flex-wrap: wrap; }
@@ -288,65 +379,25 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- WhatsApp Button Style --- */
-.whatsapp-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #25d366;
-    color: #fff;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 35px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 900;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    animation: pulse-green 2s infinite;
-}
+        .whatsapp-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background-color: #25d366; color: #fff; border-radius: 50%; text-align: center;
+            font-size: 35px; box-shadow: 2px 2px 3px #999; z-index: 900; display: flex;
+            justify-content: center; align-items: center; text-decoration: none; transition: all 0.3s ease;
+        }
+        .whatsapp-btn:hover { background-color: #128c7e; color: #fff; transform: scale(1.1); }
 
-.whatsapp-btn:hover {
-    background-color: #128c7e;
-    color: #fff;
-    transform: scale(1.1);
-}
-
-@keyframes pulse-green {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-}
         /* --- MOBILE & RESPONSIVE TWEAKS --- */
         @media (max-width: 991px) {
             .main-nav { display: none; }
             .menu-btn { display: block; }
             .header-right { gap: 15px; }
-            
-            /* UPDATED: Mobile Footer Grid (Two Columns) */
-            .footer-grid { 
-                grid-template-columns: 1fr 1fr; /* تقسيم الفوتر لعمودين */
-                text-align: center; 
-                gap: 20px; 
-            }
-
-            /* أول عمود (اللوجو والسوشيال) ياخد العرض كامل */
-            .footer-grid > .footer-col:first-child {
-                grid-column: 1 / -1; 
-                margin-bottom: 20px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.05); 
-            }
-
+            .footer-grid { grid-template-columns: 1fr 1fr; text-align: center; gap: 20px; }
+            .footer-grid > .footer-col:first-child { grid-column: 1 / -1; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .footer-col h4 { font-size: 1.1rem; margin-bottom: 20px; }
             .footer-col h4::after { left: 50%; transform: translateX(-50%); }
             .footer-link { justify-content: center; font-size: 0.9rem; white-space: nowrap; }
             .social-links { justify-content: center; }
-            
-            /* Page Specific Mobile */
             .contact-hero-wrapper { grid-template-columns: 1fr; height: auto; }
             .hero-image-side { height: 350px; clip-path: none; }
             .get-in-touch-container { grid-template-columns: 1fr; margin: 40px 20px; transform: none; }
@@ -358,45 +409,22 @@
 
         @media (max-width: 768px) {
             header, header.header-scrolled { height: 70px; padding: 0 15px; }
-            
-            /* Logo resizing for tablet/mobile */
             .logo-area { width: auto; height: 100%; }
-            .cate-logo { 
-                height: 120px; 
-                top: -15px; 
-                position: absolute;
-            }
-            .atlas-logo { height: 32px; }
-            
+            .cate-logo { height: 120px; top: -15px; position: absolute; }
+            .atlas-logo { height: 32px !important; margin-top: 5px; width: auto; }
             .g-cluster-1-big, .g-cluster-2-big { display: none; }
             .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
             .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
         }
 
         @media (max-width: 400px) {
-            /* UPDATED: Bigger Logo for small screens */
             .cate-logo { height: 110px; top: -10px; }
-            .atlas-logo { height: 28px; }
+            .atlas-logo { height: 28px !important; }
             .menu-btn { font-size: 1.4rem; }
-            
-            /* Smaller footer text on tiny screens */
             .footer-link { font-size: 0.8rem; }
         }
 
-        .atlas-logo {
-    height: 55px; 
-    object-fit: contain;
-    transition: height 0.3s ease; 
-}
-
-/* تعديل حجم لوجو أطلس للموبايل فقط */
-@media (max-width: 768px) {
-    .atlas-logo {
-        height: 30px !important; /* جربنا نصغره لـ 30 بيكسل بدل 45 */
-        width: auto; /* عشان يحافظ على أبعاد الصورة */
-        margin-top: 5px; /* تظبيط المسافة لو محتاج */
-    }
-}
+        .atlas-logo { height: 55px; object-fit: contain; transition: height 0.3s ease; }
     </style>
 </head>
 <body>
@@ -404,16 +432,9 @@
     <div class="gears-container">
         <svg class="gear-svg g-cluster-1-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
         </svg>
-        <svg class="gear-svg g-cluster-1-small" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
-
-        <svg class="gear-svg g-cluster-2-big" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
-        <svg class="gear-svg g-cluster-2-small" viewBox="0 0 512 512">
-            <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-        </svg>
+        <svg class="gear-svg g-cluster-1-small" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-2-big" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+        <svg class="gear-svg g-cluster-2-small" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.4 1.2 241.6 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
     </div>
 
     <header>
@@ -533,28 +554,27 @@
 
                     <div class="form-group-float">
                         <input type="text" class="input-float" placeholder=" ">
-                        <label class="label-float">Business Activity</label>
+                        <label class="label-float">Job Title</label>
                     </div>
                     
-                    <div class="form-group-float">
-                        <select class="input-float" required>
-                            <option value="" disabled selected></option>
-                            <option>Cairo</option>
-                            <option>Giza</option>
-                            <option>Alexandria</option>
-                            <option>Other</option>
-                        </select>
+                    <div class="form-group-float" id="cityWrapper">
+                        <input type="hidden" name="city" id="cityInput" required>
+                        <div class="input-float custom-select" id="cityTrigger">
+                            <span class="custom-select-text"></span>
+                        </div>
                         <label class="label-float">Select City</label>
+                        <div class="custom-options" id="cityOptions">
+                            </div>
                     </div>
 
-                    <div class="form-group-float">
-                        <select class="input-float">
-                            <option value="" disabled selected></option>
-                            <option>10th of Ramadan</option>
-                            <option>6th of October</option>
-                            <option>Sadat</option>
-                        </select>
+                    <div class="form-group-float" id="areaWrapper">
+                        <input type="hidden" name="area" id="areaInput" required>
+                        <div class="input-float custom-select" id="areaTrigger">
+                            <span class="custom-select-text"></span>
+                        </div>
                         <label class="label-float">Select Area</label>
+                        <div class="custom-options" id="areaOptions">
+                            </div>
                     </div>
                 </div>
 
@@ -563,28 +583,14 @@
                     <div class="radio-options">
                         <label class="custom-radio">
                             I'd like a meeting in my office
-                            <input type="radio" name="meeting" value="office">
+                            <input type="radio" name="meeting" value="office" required>
                             <span class="checkmark"></span>
                         </label>
                         <label class="custom-radio">
                             I'd like a phone call
-                            <input type="radio" name="meeting" value="phone">
+                            <input type="radio" name="meeting" value="phone" required>
                             <span class="checkmark"></span>
                         </label>
-                    </div>
-                </div>
-
-                <p style="margin: 40px 0 20px; color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Filling out the additional fields below is highly encouraged for better service.</p>
-
-                <div class="form-grid">
-                    <div class="form-group-float">
-                        <input type="text" class="input-float" placeholder=" ">
-                        <label class="label-float">Job Title</label>
-                    </div>
-
-                    <div class="form-group-float">
-                        <input type="text" class="input-float" placeholder=" ">
-                        <label class="label-float">Website / Facebook</label>
                     </div>
                 </div>
 
@@ -625,7 +631,7 @@
                 <a href="tel:020021234567" class="footer-link"><i class="fa-solid fa-phone"></i> 02.002.123.4567</a>
             </div>
         </div>
-        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman Khedr - Khaled Magdy </div>
+        <div class="copyright">© Copyright 2026 www.cate-eg.com. All Rights Reserved | created by Abdelrahman Khedr - Khaled Magdy </div>
     </div>
 
     <a href="https://wa.me/201023706078" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
@@ -652,6 +658,132 @@
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution:'Tiles © Esri'}).addTo(map);
         const icon = L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize: [35, 35], iconAnchor: [17, 35], popupAnchor: [0, -35]});
         L.marker([30.2760443, 31.7755203], {icon: icon}).addTo(map).bindPopup("<b>CATE HQ</b><br>10th of Ramadan").openPopup();
+
+        // City and Areas Data
+        const cityAreas = {
+            "Cairo": ["New Cairo", "Nasr City", "Maadi", "Heliopolis", "Downtown", "Shoubra", "El Sherouk", "Badr City", "15th of May", "Obour"],
+            "Giza": ["6th of October", "Sheikh Zayed", "Dokki", "Mohandeseen", "Haram", "Faisal", "Smart Village", "Abu Rawash"],
+            "Alexandria": ["Smouha", "Sidi Gaber", "Montaza", "Borg El Arab", "Miami", "Agami", "Amreya"],
+            "Sharqia": ["10th of Ramadan", "Zagazig", "Belbeis", "Minya El Qamh", "Abu Hammad"],
+            "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Gamasa"],
+            "Qalyubia": ["Banha", "Shubra El Kheima", "Qalyub", "El Khanka"],
+            "Monufia": ["Sadat City", "Shibin El Kom", "Ashmoun", "Menouf"],
+            "RedSea": ["Hurghada", "Safaga", "Marsa Alam", "El Gouna", "Ras Gharib"],
+            "Gharbia": ["Tanta", "El Mahalla El Kubra", "Zifta", "Kafr El Zayat"],
+            "Ismailia": ["Ismailia City", "Fayed", "Qantara"],
+            "Suez": ["Suez City", "Ain Sokhna", "Attaka"],
+            "PortSaid": ["Port Said City", "Port Fouad", "South Port Said"],
+            "Fayoum": ["Fayoum City", "Ibsheway", "Tamiya"],
+            "BeniSuef": ["Beni Suef City", "Biba", "Nasser"],
+            "Minya": ["Minya City", "New Minya", "Samalut", "Mallawi"],
+            "Assiut": ["Assiut City", "New Assiut", "Dairut", "Abnub"],
+            "Sohag": ["Sohag City", "New Sohag", "Akhmim", "Girga"],
+            "Qena": ["Qena City", "Nagaa Hammadi", "Qus"],
+            "Luxor": ["Luxor City", "Karnak", "Esna"],
+            "Aswan": ["Aswan City", "Edfu", "Kom Ombo", "Abu Simbel"]
+        };
+
+        // --- Custom Dropdown Logic ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const cityTrigger = document.getElementById("cityTrigger");
+            const cityOptions = document.getElementById("cityOptions");
+            const cityWrapper = document.getElementById("cityWrapper");
+            const cityInput = document.getElementById("cityInput");
+            
+            const areaTrigger = document.getElementById("areaTrigger");
+            const areaOptions = document.getElementById("areaOptions");
+            const areaWrapper = document.getElementById("areaWrapper");
+            const areaInput = document.getElementById("areaInput");
+
+            // Populate Cities
+            Object.keys(cityAreas).forEach(city => {
+                let div = document.createElement("div");
+                div.classList.add("custom-option");
+                // Add space before Capital letters for display (e.g. RedSea -> Red Sea)
+                div.textContent = city.replace(/([A-Z])/g, ' $1').trim();
+                div.dataset.value = city;
+                cityOptions.appendChild(div);
+            });
+
+            // Toggle Dropdowns
+            function toggleDropdown(trigger, options, wrapper) {
+                const isOpen = options.classList.contains("show");
+                // Close all first
+                document.querySelectorAll(".custom-options").forEach(opt => opt.classList.remove("show"));
+                document.querySelectorAll(".custom-select").forEach(sel => sel.classList.remove("is-open"));
+                document.querySelectorAll(".form-group-float").forEach(wrp => wrp.classList.remove("is-active"));
+                
+                if (!isOpen) {
+                    options.classList.add("show");
+                    trigger.classList.add("is-open");
+                    wrapper.classList.add("is-active");
+                }
+            }
+
+            cityTrigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleDropdown(cityTrigger, cityOptions, cityWrapper);
+            });
+
+            areaTrigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+                // Prevent opening if no city is selected
+                if(cityInput.value === "") {
+                    alert("Please select a city first.");
+                    return;
+                }
+                toggleDropdown(areaTrigger, areaOptions, areaWrapper);
+            });
+
+            // Handle Selection
+            document.addEventListener("click", (e) => {
+                if(e.target.classList.contains("custom-option")) {
+                    const selectedValue = e.target.dataset.value;
+                    const selectedText = e.target.textContent;
+                    const isCity = e.target.closest("#cityOptions");
+                    const isArea = e.target.closest("#areaOptions");
+
+                    if(isCity) {
+                        cityTrigger.querySelector(".custom-select-text").textContent = selectedText;
+                        cityInput.value = selectedValue;
+                        cityWrapper.classList.add("has-value");
+                        
+                        // Clear old selection styles
+                        cityOptions.querySelectorAll(".custom-option").forEach(opt => opt.classList.remove("selected"));
+                        e.target.classList.add("selected");
+
+                        // Populate Areas based on City
+                        areaOptions.innerHTML = "";
+                        areaTrigger.querySelector(".custom-select-text").textContent = "";
+                        areaInput.value = "";
+                        areaWrapper.classList.remove("has-value");
+
+                        cityAreas[selectedValue].forEach(area => {
+                            let div = document.createElement("div");
+                            div.classList.add("custom-option");
+                            div.textContent = area;
+                            div.dataset.value = area;
+                            areaOptions.appendChild(div);
+                        });
+                    }
+
+                    if(isArea) {
+                        areaTrigger.querySelector(".custom-select-text").textContent = selectedText;
+                        areaInput.value = selectedValue;
+                        areaWrapper.classList.add("has-value");
+                        
+                        // Clear old selection styles
+                        areaOptions.querySelectorAll(".custom-option").forEach(opt => opt.classList.remove("selected"));
+                        e.target.classList.add("selected");
+                    }
+                }
+
+                // Close dropdowns when clicking outside
+                document.querySelectorAll(".custom-options").forEach(opt => opt.classList.remove("show"));
+                document.querySelectorAll(".custom-select").forEach(sel => sel.classList.remove("is-open"));
+                document.querySelectorAll(".form-group-float").forEach(wrp => wrp.classList.remove("is-active"));
+            });
+        });
     </script>
 
 </body>
