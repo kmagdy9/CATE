@@ -830,7 +830,7 @@
     <div class="footer-section reveal">
         <div class="callback-container">
             <h2 class="callback-title">Request A Call Back</h2>
-            <form onsubmit="event.preventDefault(); alert('Request Sent!');">
+            <form id="callbackForm">
                 <div class="form-group-modern"><input type="text" id="fname" class="form-input-modern" placeholder=" " required><label for="fname" class="form-label-modern">Full Name</label></div>
                 <div class="form-group-modern"><input type="tel" id="fphone" class="form-input-modern" placeholder=" " required><label for="fphone" class="form-label-modern">Phone Number</label></div>
                 <div class="form-group-modern"><input type="email" id="femail" class="form-input-modern" placeholder=" " required><label for="femail" class="form-label-modern">Email</label></div>
@@ -1285,6 +1285,48 @@
             
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMsg}`, '_blank');
         }
+
+        /* --- كود الإيميل الخاص بـ Request A Call Back --- */
+        document.getElementById('callbackForm').addEventListener('submit', function(event) {
+            // نمنع الفورم إنها تعمل ريفريش للصفحة
+            event.preventDefault();
+
+            // نسحب البيانات من الحقول
+            const name = document.getElementById('fname').value;
+            const phone = document.getElementById('fphone').value;
+            const email = document.getElementById('femail').value;
+            const msg = document.getElementById('fmsg').value;
+
+            // تجهيز شكل الإيميل
+            const emailSubject = `New Call Back Request from ${name}`;
+            const emailBody = `Hello CATE Team,
+
+You have received a new Call Back request from the website.
+
+Here are the details:
+-----------------------------------
+- Full Name: ${name}
+- Phone Number: ${phone}
+- Email Address: ${email}
+- Message: 
+${msg || 'No message provided.'}
+-----------------------------------
+
+Best regards,
+CATE Website System`;
+
+            // الإيميل اللي هيتبعتله
+            const targetEmail = 'info@cate-eg.com';
+
+            // استخدام mailto لفتح تطبيق الإيميل وتعبئة البيانات
+            const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // فتح اللينك
+            window.location.href = mailtoLink;
+
+            // تفريغ الفورم بعد الإرسال
+            this.reset(); 
+        });
     </script>
 </body>
 </html>
