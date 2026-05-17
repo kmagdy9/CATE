@@ -491,7 +491,7 @@
                 <div class="contact-details">
                     <h4>Customer Care:</h4>
                     <p>WhatsApp customer care line</p>
-                    <a href="https://wa.me/201023706078">01023706078</a>
+                    <a href="https://wa.me/201070987082">01070987082</a>
                     <a href="tel:0239123786">0239123786</a>
                 </div>
             </div>
@@ -533,27 +533,27 @@
                 
                 <div class="form-grid">
                     <div class="form-group-float full-width">
-                        <input type="text" id="fullName" name="fname" class="input-float" placeholder=" " required>
+                        <input type="text" id="fullName" class="input-float" placeholder=" " required>
                         <label class="label-float">Full Name</label>
                     </div>
                     
                     <div class="form-group-float">
-                        <input type="tel" id="mobileNo" name="mobileNo" class="input-float" placeholder=" " required>
+                        <input type="tel" id="mobileNo" class="input-float" placeholder=" " required>
                         <label class="label-float">Mobile No.</label>
                     </div>
                     
                     <div class="form-group-float">
-                        <input type="email" id="emailAddress" name="femail" class="input-float" placeholder=" " required>
+                        <input type="email" id="emailAddress" class="input-float" placeholder=" " required>
                         <label class="label-float">Email Address</label>
                     </div>
 
                     <div class="form-group-float">
-                        <input type="text" id="companyName" name="companyName" class="input-float" placeholder=" ">
+                        <input type="text" id="companyName" class="input-float" placeholder=" ">
                         <label class="label-float">Company Name</label>
                     </div>
 
                     <div class="form-group-float">
-                        <input type="text" id="jobTitle" name="jobTitle" class="input-float" placeholder=" ">
+                        <input type="text" id="jobTitle" class="input-float" placeholder=" ">
                         <label class="label-float">Job Title</label>
                     </div>
                     
@@ -593,7 +593,7 @@
                 </div>
 
                 <div class="form-group-float full-width">
-                    <textarea id="userMessage" name="fmsg" class="input-float textarea-float" placeholder=" "></textarea>
+                    <textarea id="userMessage" class="input-float textarea-float" placeholder=" "></textarea>
                     <label class="label-float">Your Message</label>
                 </div>
 
@@ -632,7 +632,7 @@
         <div class="copyright">© Copyright 2026 www.cate-eg.com. All Rights Reserved | created by Abdelrahman Khedr - Khaled Magdy </div>
     </div>
 
-    <a href="https://wa.me/201023706078" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/201070987082" class="whatsapp-btn" target="_blank" aria-label="Chat on WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -783,60 +783,62 @@
             });
         });
 
-        // --- Send to Email Logic (Updated) ---
+        // --- Send to Email Logic ---
         function sendToEmail(event) {
-    event.preventDefault();
+            // منع الفورم من عمل Refresh للصفحة
+            event.preventDefault();
 
-    const form = event.target;
-    const formData = new FormData(form);
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    // 1. تغيير شكل الزرار وقت الإرسال عشان العميل يعرف إن العملية بدأت
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-    submitBtn.disabled = true;
+            // سحب البيانات من الحقول
+            const fullName = document.getElementById('fullName').value;
+            const mobileNo = document.getElementById('mobileNo').value;
+            const emailAddress = document.getElementById('emailAddress').value;
+            const companyName = document.getElementById('companyName').value || 'N/A';
+            const jobTitle = document.getElementById('jobTitle').value || 'N/A';
+            const city = document.getElementById('cityInput').value || 'N/A';
+            const area = document.getElementById('areaInput').value || 'N/A';
+            const message = document.getElementById('userMessage').value || 'No specific message.';
 
-    // 2. الرابط الخاص بك في Formspree
-    const formspreeURL = "https://formspree.io/f/xvzdjdrq"; 
+            // سحب نوع الميتينج 
+            const meetingPreference = document.querySelector('input[name="meeting"]:checked').value;
+            const meetingText = meetingPreference === 'office' ? "Meeting in Client's Office" : "Meeting in CATE Office";
 
-    // 3. إرسال البيانات
-    fetch(formspreeURL, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // نجاح الإرسال
-            alert('Thank you! Your message has been sent successfully to the CATE team.');
-            form.reset();
+            // تجهيز عنوان الإيميل
+            const emailSubject = `New Contact Request from ${fullName} - CATE Website`;
+
+            // بناء الرسالة وتنسيقها للإيميل
+            const emailBody = `Hello Team,
+
+You have received a new contact request from the CATE website. Here are the details:
+
+👤 Client Information:
+- Name: ${fullName}
+- Job Title: ${jobTitle}
+- Company: ${companyName}
+
+📞 Contact Details:
+- Mobile: ${mobileNo}
+- Email: ${emailAddress}
+
+📍 Location & Preferences:
+- Location: ${area}, ${city}
+- Request Type: ${meetingText}
+
+📝 Message:
+"${message}"
+
+---
+This is an automated message from the CATE-EG website contact form.`;
+
+            // تحويل العنوان والرسالة لصيغة يقبلها الرابط (URL Encoding)
+            const encodedSubject = encodeURIComponent(emailSubject);
+            const encodedBody = encodeURIComponent(emailBody);
+
+            // الإيميل اللي هيتبعت عليه
+            const targetEmail = "info@cate-eg.com";
             
-            // إرجاع القوائم المنسدلة (City & Area) لحالتها الافتراضية
-            const cityText = document.getElementById('cityTrigger').querySelector('.custom-select-text');
-            const areaText = document.getElementById('areaTrigger').querySelector('.custom-select-text');
-            if(cityText) cityText.textContent = '';
-            if(areaText) areaText.textContent = '';
-            
-            document.getElementById('cityWrapper').classList.remove('has-value');
-            document.getElementById('areaWrapper').classList.remove('has-value');
-        } else {
-            // لو في مشكلة من طرف سيرفر Formspree
-            alert('Oops! There was a problem submitting your form. Please try again.');
+            // فتح برنامج الإيميل الافتراضي عند العميل
+            window.location.href = `mailto:${targetEmail}?subject=${encodedSubject}&body=${encodedBody}`;
         }
-    })
-    .catch(error => {
-        // لو في مشكلة في الإنترنت عند العميل
-        console.error('Error:', error);
-        alert('An error occurred. Please check your internet connection and try again.');
-    })
-    .finally(() => {
-        // إرجاع الزرار لشكلة الطبيعي في كل الأحوال
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    });
-}
     </script>
 
 </body>
